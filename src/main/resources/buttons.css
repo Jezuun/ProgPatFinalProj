@@ -1,0 +1,9 @@
+.language {
+    -fx-background-color: #1385bc;
+    -fx-border-color: grey;
+}
+
+.logout {
+    -fx-background-color: #f46a11;
+    -fx-border-color: grey;
+}
