@@ -1,29 +1,26 @@
-# Database Constraint Notes
+Database Constraint Notes
 
-These constraints protect the conference data from invalid or duplicate records. They are defined in `src/main/resources/db/schema.sql` unless noted otherwise.
+Profile and credentials are separate. users holds the profile (name, email, age, role). user_credentials holds only the password hash and is linked by user_id.
 
-## Users and credentials
+Constraint	Where	Why
+Primary keys (user_id, conference_id, registration_id)	every table	Each row has a unique id. user_credentials.user_id is also its primary key, so a user has at most one credentials row.
 
-- `users.email` is `NOT NULL` and `UNIQUE`, so every account has an email and no two users share one. A basic `CHECK` rejects values that do not resemble an email address.
-- `first_name` and `last_name` must not be blank. `age` must be zero or greater, and `role` must be either `ADMIN` or `PARTICIPANT`.
-- `credentials.user_id` is both its primary key and a foreign key to `users.id`. This enforces at most one credential row per user and keeps login data separate from profile data. Deleting a user cascades to that user's credentials.
-- Password data is stored as a hash and salt in `credentials`; the profile table does not contain a password.
+UNIQUE on users.email	users	Two accounts cannot use the same email.
 
-## Conferences
+CHECK (age >= 0)	users	No negative ages.
 
-- `capacity` must be greater than zero.
-- `title` cannot be blank, and both `start_time` and `end_time` are required. A `CHECK` requires `end_time` to be later than `start_time`.
-- `UNIQUE (title, start_time)` prevents two conferences from having the same title at the same start time.
-- Dates and times use the same ISO-8601 text format so the stored values can be compared consistently.
+CHECK (role IN ('ADMINISTRATOR','PARTICIPANT'))	users	Only the two valid roles.
 
-## Registrations
+CHECK (capacity > 0)	conferences	A conference needs at least one seat.
 
-- `user_id` and `conference_id` are foreign keys to their parent records. Foreign-key enforcement is enabled on each connection by `Database.getConnection()`.
-- `UNIQUE (user_id, conference_id)` prevents duplicate registration rows for the same participant and conference. When someone registers again after cancelling, `RegistrationDao` reuses the cancelled row.
-- `status` is limited to `CONFIRMED`, `WAITLISTED`, or `CANCELLED`.
-- A `CHECK` requires wait-listed rows to have a positive `waitlist_position`; confirmed and cancelled rows must have no position.
-- A partial unique index on `(conference_id, waitlist_position)` for wait-listed rows ensures that two people cannot occupy the same queue position in one conference.
+CHECK (end_date_time > start_date_time)	conferences	A conference cannot end before it starts. Dates are ISO text (2026-12-01T09:00:00), so they compare correctly as text.
 
-## Rules enforced by the DAO
+UNIQUE (user_id, conference_id)	registrations	A participant cannot register twice for the same conference.
 
-Some rules depend on other rows and are handled in DAO transactions rather than by a single table constraint. `RegistrationDao` checks capacity and scheduling conflicts when registering, and processes FIFO promotion when a confirmed registration is cancelled. `ConferenceDao` prevents reducing capacity below the confirmed registration count and prevents deletion while confirmed or wait-listed registrations remain.
+CHECK (status IN ('CONFIRMED','WAITLISTED','CANCELLED'))	registrations	Only valid statuses.
+
+Foreign keys with ON DELETE CASCADE	credentials, registrations	A registration cannot point to a missing user or conference. Deleting a user also deletes the credentials row. Foreign keys are switched on in Database.getConnection().
+
+Rules left for Deliverable 2 (services)
+
+Capacity checks, scheduling conflicts, waiting-list promotion on cancellation, and "do not delete a conference that has registrations" will be added in the service layer.

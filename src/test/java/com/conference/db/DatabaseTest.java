@@ -10,62 +10,48 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseTest {
 
-    @TempDir
-    Path tempDir;
-
-    private Database database;
-
     @BeforeEach
     void setUp() {
-        database = Database.forFile(tempDir.resolve("test.db"));
-        database.reset();
+        TestDb.create();
     }
 
     @Test
-    void eachConnectionEnforcesForeignKeys() throws SQLException {
-        try (Connection connection = database.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery("PRAGMA foreign_keys")) {
-            rs.next();
+    void foreignKeysAreOnForEveryConnection() throws SQLException {
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("PRAGMA foreign_keys")) {
+            assertTrue(rs.next());
             assertEquals(1, rs.getInt(1));
         }
+    }
+
+    @Test
+    void seedDataIsLoaded() throws SQLException {
+        assertEquals(5, count("users"));
+        assertEquals(5, count("user_credentials"));
+        assertEquals(3, count("conferences"));
+        assertEquals(4, count("registrations"));
+    }
+
+    @Test
+    void registrationWithUnknownUserIsRejected() {
         assertThrows(SQLException.class, () -> {
-            try (Connection connection = database.getConnection();
-                 Statement statement = connection.createStatement()) {
-                statement.executeUpdate(
-                        "INSERT INTO registrations (user_id, conference_id, status) VALUES (999, 1, 'CONFIRMED')");
+            try (Connection conn = Database.getConnection();
+                 Statement stmt = conn.createStatement()) {
+                stmt.executeUpdate("INSERT INTO registrations (user_id, conference_id, status, registration_date) "
+                        + "VALUES (999, 1, 'CONFIRMED', '2026-11-01T10:00:00')");
             }
         });
     }
 
-    @Test
-    void seedAndResetRestoreExpectedRows() throws SQLException {
-        assertEquals(6, count("users"));
-        assertEquals(6, count("credentials"));
-        assertEquals(4, count("conferences"));
-        assertEquals(8, count("registrations"));
-
-        try (Connection connection = database.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.executeUpdate("DELETE FROM conferences");
-        }
-        assertEquals(0, count("conferences"));
-        database.reset();
-        assertEquals(6, count("users"));
-        assertEquals(6, count("credentials"));
-        assertEquals(4, count("conferences"));
-        assertEquals(8, count("registrations"));
-    }
-
     private int count(String table) throws SQLException {
-        try (Connection connection = database.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM " + table)) {
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM " + table)) {
             rs.next();
             return rs.getInt(1);
         }

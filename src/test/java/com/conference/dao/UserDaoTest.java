@@ -1,89 +1,58 @@
 package com.conference.dao;
 
-import com.conference.db.Database;
+import com.conference.db.TestDb;
 import com.conference.exception.DataAccessException;
-import com.conference.model.Credentials;
 import com.conference.model.Role;
 import com.conference.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.nio.file.Path;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoTest {
-
-    @TempDir
-    Path tempDir;
-
-    private UserDao dao;
+    private UserDao userDao;
 
     @BeforeEach
     void setUp() {
-        Database database = Database.forFile(tempDir.resolve("test.db"));
-        database.reset();
-        dao = new UserDao(database);
+        TestDb.create();
+        userDao = new UserDao();
     }
 
     @Test
-    void seedAdminCanBeFoundByEmail() {
-        Optional<User> admin = dao.findByEmail("admin@conference.local");
-        assertTrue(admin.isPresent());
-        assertEquals(Role.ADMIN, admin.get().getRole());
-        assertEquals(40, admin.get().getAge());
+    void testCreateAndFindAll() {
+        userDao.create(new User(0, "Kitty Cat", "kitty@test.com", 25, Role.PARTICIPANT), "hash");
+
+        assertEquals(6, userDao.findAll().size());
     }
 
     @Test
-    void createWithCredentialsSavesProfileAndPasswordData() {
-        User user = new User("Zoe", "Martin", "zoe@example.com", 20, Role.PARTICIPANT);
-        int id = dao.createWithCredentials(user, "hash", "salt");
+    void testFindById() {
+        User user = userDao.findById(2);
 
-        assertTrue(id > 0);
-        assertEquals(id, user.getId());
-        assertEquals(20, dao.findById(id).orElseThrow().getAge());
-        Credentials credentials = dao.findCredentialsByEmail("zoe@example.com").orElseThrow();
-        assertEquals(id, credentials.userId());
-        assertEquals("hash", credentials.passwordHash());
+        assertEquals("Lebron James", user.getFullName());
+        assertNull(userDao.findById(999));
     }
 
     @Test
-    void failedCredentialsInsertRollsBackTheProfile() {
-        User user = new User("Zoe", "Martin", "zoe@example.com", 20, Role.PARTICIPANT);
+    void testUpdate() {
+        User user = userDao.findById(2);
+        user.setFullName("Updated Name");
+        userDao.update(user);
 
-        assertThrows(DataAccessException.class,
-                () -> dao.createWithCredentials(user, null, "salt"));
-
-        assertFalse(dao.findByEmail("zoe@example.com").isPresent());
+        assertEquals("Updated Name", userDao.findById(2).getFullName());
     }
 
     @Test
-    void duplicateEmailAndNegativeAgeAreRejected() {
-        User duplicate = new User("Alice", "Copy", "alice@example.com", 22, Role.PARTICIPANT);
-        assertThrows(DataAccessException.class,
-                () -> dao.createWithCredentials(duplicate, "hash", "salt"));
+    void testDelete() {
+        userDao.delete(5);
 
-        User invalidAge = new User("Pat", "Example", "pat@example.com", -1, Role.PARTICIPANT);
-        assertThrows(DataAccessException.class,
-                () -> dao.createWithCredentials(invalidAge, "hash", "salt"));
+        assertNull(userDao.findById(5));
     }
 
     @Test
-    void updateChangesProfileFields() {
-        User alice = dao.findByEmail("alice@example.com").orElseThrow();
-        alice.setLastName("Tremblay-Roy");
-        alice.setEmail("alice.new@example.com");
-        alice.setAge(23);
+    void testDuplicateEmailIsRejected() {
+        User duplicate = new User(0, "Other", "lebron@example.com", 30, Role.PARTICIPANT);
 
-        assertTrue(dao.update(alice));
-        User reloaded = dao.findById(alice.getId()).orElseThrow();
-        assertEquals("Tremblay-Roy", reloaded.getLastName());
-        assertEquals("alice.new@example.com", reloaded.getEmail());
-        assertEquals(23, reloaded.getAge());
+        assertThrows(DataAccessException.class, () -> userDao.create(duplicate, "hash"));
     }
 }
