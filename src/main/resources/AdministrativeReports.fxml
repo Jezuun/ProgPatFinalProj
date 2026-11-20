@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+<AnchorPane prefHeight="375.0" prefWidth="600.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" layoutY="39.0" prefHeight="17.0" prefWidth="600.0" text="Administrative Reports">
         <font>
             <Font name="System Bold" size="18.0" />
@@ -39,4 +39,5 @@
                <Insets />
             </VBox.margin></Button>
       </children></VBox>
+   <Button layoutX="533.0" layoutY="336.0" mnemonicParsing="false" styleClass="logout" text="Return" />
 </AnchorPane>

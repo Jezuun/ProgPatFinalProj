@@ -27,3 +27,15 @@
     -fx-border-color: grey;
     -fx-text-fill: white;
 }
+
+.login {
+    -fx-background-color: #46c80a;
+    -fx-border-color: grey;
+    -fx-text-fill: white;
+}
+
+.signup {
+    -fx-background-color: #55a845;
+    -fx-border-color: grey;
+    -fx-text-fill: white;
+}

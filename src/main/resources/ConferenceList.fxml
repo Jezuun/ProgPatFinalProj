@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView prefHeight="494.0" prefWidth="158.0">
         <columns>
@@ -27,8 +23,8 @@
       <Label layoutX="298.3333435058594" layoutY="241.33334350585938" text="Capacity:" />
       <Label layoutX="219.0" layoutY="268.66668701171875" text="Comfirmed Participants:" />
       <Label layoutX="264.3333435058594" layoutY="296.0" text="Available Seats:" />
-      <Button layoutX="282.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="View" />
-      <Button layoutX="454.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="Register" />
+      <Button layoutX="282.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" styleClass="view" text="View" />
+      <Button layoutX="454.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" styleClass="language" text="Register" />
       <Button layoutX="627.0" layoutY="455.0" mnemonicParsing="false" styleClass="logout" text="Return" />
       <ToggleButton layoutX="610.0" layoutY="14.0" mnemonicParsing="false" styleClass="language" text="Language" />
       <Label layoutX="536.0" layoutY="18.0" text="Participant" />

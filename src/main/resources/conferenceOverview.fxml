@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0" prefWidth="693.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TableView prefHeight="494.0" prefWidth="158.0">
+        <TableView prefHeight="455.0" prefWidth="158.0">
             <columns>
                 <TableColumn prefWidth="156.66665649414062" text="Conference List" />
             </columns>
@@ -24,7 +24,7 @@
         <Label layoutX="219.0" layoutY="268.66668701171875" text="Comfirmed Participants:" />
         <Label layoutX="264.3333435058594" layoutY="296.0" text="Available Seats:" />
         <Button layoutX="383.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" styleClass="view" text="View" />
-        <Button layoutX="627.0" layoutY="455.0" mnemonicParsing="false" styleClass="logout" text="Return" />
+        <Button layoutX="626.0" layoutY="414.0" mnemonicParsing="false" styleClass="logout" text="Return" />
         <ToggleButton layoutX="610.0" layoutY="14.0" mnemonicParsing="false" styleClass="language" text="Language" />
         <Label layoutX="558.0" layoutY="19.0" text="Admin" />
         <Label alignment="CENTER" layoutX="155.0" layoutY="75.0" prefHeight="17.0" prefWidth="538.0" text="Select a conference to view" />
