@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="837.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TableView prefHeight="494.0" prefWidth="158.0">
+            <columns>
+                <TableColumn prefWidth="156.66665649414062" text="Conference List" />
+            </columns>
+        </TableView>
+        <Label alignment="CENTER" layoutX="156.0" layoutY="41.0" prefHeight="27.0" prefWidth="538.0" text="Conference Management">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Button layoutX="410.0" layoutY="386.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" styleClass="view" text="View" />
+        <Button layoutX="520.0" layoutY="386.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="82.0" styleClass="update" text="Update" textFill="WHITE" />
+        <Button layoutX="773.0" layoutY="455.0" mnemonicParsing="false" styleClass="logout" text="Return" />
+        <ToggleButton layoutX="756.0" layoutY="14.0" mnemonicParsing="false" styleClass="language" text="Language" />
+        <Label layoutX="703.0" layoutY="18.0" text="Admin" />
+        <Label alignment="CENTER" layoutX="155.0" layoutY="75.0" prefHeight="17.0" prefWidth="538.0" text="Select a conference to view" />
+      <Button layoutX="299.0" layoutY="386.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="82.0" styleClass="cancel" text="Delete" />
+      <HBox layoutX="186.0" layoutY="126.0" prefHeight="231.0" prefWidth="612.0">
+         <children>
+            <VBox prefHeight="231.0" prefWidth="423.0" spacing="10.0">
+               <children>
+                    <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="136.0" text="Title:" textAlignment="RIGHT" />
+                    <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="136.0" text="Conference ID:" textAlignment="RIGHT" />
+                    <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="136.0" text="Start:" textAlignment="RIGHT" />
+                    <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="136.0" text="End:" textAlignment="RIGHT" />
+                    <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="136.0" text="Capacity:" textAlignment="RIGHT" />
+                    <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="136.0" text="Comfirmed Participants:" textAlignment="RIGHT" />
+                    <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="136.0" text="Available Seats:" textAlignment="RIGHT" />
+               </children></VBox>
+            <VBox prefHeight="231.0" prefWidth="268.0" spacing="2.0">
+               <children>
+                  <TextField promptText="Update Title">
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin></TextField>
+                  <TextField promptText="Update Start Time" />
+                  <TextField promptText="Update End Time" />
+                  <TextField promptText="Update Capacity" />
+               </children></VBox>
+         </children>
+      </HBox>
+    </children>
+</AnchorPane>

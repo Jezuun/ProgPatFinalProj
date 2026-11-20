@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="">
+    <ToggleButton layoutX="495.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" styleClass="language" text="Language" />
+    <Label layoutX="450.0" layoutY="18.0" text="Admin" />
+   <Label alignment="CENTER" layoutX="-1.0" layoutY="52.0" prefHeight="17.0" prefWidth="600.0" text="Create Conference">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Label>
+   <VBox layoutX="90.0" layoutY="100.0" prefHeight="200.0" prefWidth="424.0">
+      <children>
+         <HBox prefHeight="40.0" prefWidth="424.0">
+            <children>
+               <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="83.0" text="Title:">
+                  <VBox.margin>
+                     <Insets />
+                  </VBox.margin>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin></Label>
+               <TextField prefHeight="25.0" prefWidth="331.0" promptText="Input Title" />
+            </children></HBox>
+         <HBox prefHeight="40.0" prefWidth="424.0">
+            <children>
+               <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="83.0" text="Conference ID:">
+                  <VBox.margin>
+                     <Insets right="10.0" />
+                  </VBox.margin>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin></Label>
+               <TextField prefHeight="25.0" prefWidth="331.0" promptText="Input Conference ID" />
+            </children></HBox>
+         <HBox prefHeight="40.0" prefWidth="424.0">
+            <children>
+               <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="83.0" text="Start:">
+                  <VBox.margin>
+                     <Insets right="10.0" />
+                  </VBox.margin>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin></Label>
+               <TextField prefHeight="25.0" prefWidth="333.0" promptText="Input Start Time" />
+            </children></HBox>
+         <HBox prefHeight="40.0" prefWidth="424.0">
+            <children>
+               <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="83.0" text="End:">
+                  <VBox.margin>
+                     <Insets right="10.0" />
+                  </VBox.margin>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin></Label>
+               <TextField prefHeight="25.0" prefWidth="332.0" promptText="Input End Time" />
+            </children></HBox>
+         <HBox prefHeight="40.0" prefWidth="424.0">
+            <children>
+               <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="83.0" text="Capacity:">
+                  <VBox.margin>
+                     <Insets right="10.0" />
+                  </VBox.margin>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin></Label>
+               <TextField prefHeight="25.0" prefWidth="331.0" promptText="Input Capacity" />
+            </children></HBox>
+      </children></VBox>
+   <Button layoutX="246.0" layoutY="316.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" styleClass="update" text="Create" />
+   <Button layoutX="533.0" layoutY="361.0" mnemonicParsing="false" styleClass="logout" text="Return" />
+</AnchorPane>

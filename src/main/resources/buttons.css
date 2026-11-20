@@ -1,9 +1,29 @@
 .language {
     -fx-background-color: #1385bc;
     -fx-border-color: grey;
+    -fx-text-fill: white;
 }
 
 .logout {
     -fx-background-color: #f46a11;
     -fx-border-color: grey;
+    -fx-text-fill: black;
+}
+
+.cancel {
+    -fx-background-color: #f8243b;
+    -fx-border-color: grey;
+    -fx-text-fill: white;
+}
+
+.view {
+    -fx-background-color: #28af59;
+    -fx-border-color: grey;
+    -fx-text-fill: white;
+}
+
+.update{
+    -fx-background-color: #2059cd;
+    -fx-border-color: grey;
+    -fx-text-fill: white;
 }
