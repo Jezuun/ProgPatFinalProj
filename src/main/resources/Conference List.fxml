@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="693.0" stylesheets="@buttons.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView prefHeight="494.0" prefWidth="158.0">
         <columns>
@@ -30,8 +29,8 @@
       <Label layoutX="264.3333435058594" layoutY="296.0" text="Available Seats:" />
       <Button layoutX="282.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="View" />
       <Button layoutX="454.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="Register" />
-      <Button layoutX="627.0" layoutY="455.0" mnemonicParsing="false" text="Return" />
-      <ToggleButton layoutX="610.0" layoutY="14.0" mnemonicParsing="false" text="Language" />
+      <Button layoutX="627.0" layoutY="455.0" mnemonicParsing="false" styleClass="logout" text="Return" />
+      <ToggleButton layoutX="610.0" layoutY="14.0" mnemonicParsing="false" styleClass="language" text="Language" />
       <Label layoutX="536.0" layoutY="18.0" text="Participant" />
       <Label alignment="CENTER" layoutX="155.0" layoutY="75.0" prefHeight="17.0" prefWidth="538.0" text="Select a conference to view" />
    </children>
