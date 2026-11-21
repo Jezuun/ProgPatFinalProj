@@ -20,7 +20,7 @@ public class Validate {
         return null;
     }
 
-    private String hash(String password) {
+    public static String hash(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));

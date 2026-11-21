@@ -27,7 +27,7 @@ public class LogInController {
     @FXML
     private void login(ActionEvent event) {
         String emailAddress = email.getText().trim();
-        String password = passwd.getText();   // do not trim a password
+        String password = passwd.getText();
 
         if (emailAddress.isEmpty() || password.isEmpty()) {
             showMessage(Alert.AlertType.WARNING, "Input Required",
@@ -53,6 +53,11 @@ public class LogInController {
         } else {
             openScreen(event, "/userDashboard.fxml", "Dashboard");
         }
+    }
+
+    @FXML
+    private void signUp(ActionEvent event){
+        openScreen(event,"/signUp.fxml", "Sign up");
     }
 
     private void openScreen(ActionEvent event, String fxmlPath, String title) {
