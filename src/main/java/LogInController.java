@@ -88,9 +88,4 @@ public class LogInController {
         else
             System.out.println("French test");
     }
-
-    @FXML
-    public void signup(ActionEvent event) {
-        openScreen(event, "/SignUp.fxml", "Sign Up");
-    }
 }
