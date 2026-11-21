@@ -88,5 +88,4 @@ public class LogInController {
         else
             System.out.println("French test");
     }
-
 }
