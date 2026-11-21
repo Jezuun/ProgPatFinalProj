@@ -8,11 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class LogInController {
@@ -23,6 +22,8 @@ public class LogInController {
     private TextField email;
     @FXML
     private PasswordField passwd;
+    @FXML
+    private ToggleButton lang;
 
     @FXML
     private void login(ActionEvent event) {
@@ -49,9 +50,9 @@ public class LogInController {
         }
 
         if (user.getRole() == Role.ADMINISTRATOR) {
-            openScreen(event, "/adminControlPanel.fxml", "Admin Control Panel");
+            openScreen(event, "/AdminControlPanel.fxml", "Admin Control Panel");
         } else {
-            openScreen(event, "/userDashboard.fxml", "Dashboard");
+            openScreen(event, "/UserDashboard.fxml", "Dashboard");
         }
     }
 
@@ -73,5 +74,18 @@ public class LogInController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void toggleLang() {
+        if (lang.isSelected())
+            System.out.println("English test");
+        else
+            System.out.println("French test");
+    }
+
+    @FXML
+    public void signup(ActionEvent event) {
+        openScreen(event, "/SignUp.fxml", "Sign Up");
     }
 }
