@@ -40,6 +40,37 @@ public class UserDao {
         }
     }
 
+    public User findByEmail(String userEmail) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, userEmail);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapUser(rs);
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "error finding user by email: " + userEmail, e);
+            throw new DataAccessException("could not find the user by email", e);
+        }
+    }
+
+    public String getPasswordHash(int userId) {
+        String sql = "SELECT password_hash FROM user_credentials WHERE user_id = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? rs.getString("password_hash") : null;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "error reading credentials for user " + userId, e);
+            throw new DataAccessException("could not read credentials", e);
+        }
+    }
+
     public User findById(int userId) {
         String sql = "SELECT * FROM users WHERE user_id = ?";
         try (Connection conn = Database.getConnection();
@@ -49,6 +80,7 @@ public class UserDao {
                 if (rs.next()) {
                     return mapUser(rs);
                 }
+
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "error with userid: " + userId, e);
@@ -101,7 +133,7 @@ public class UserDao {
         }
     }
 
-    private User mapUser(ResultSet rs) throws SQLException {
+    private static User mapUser(ResultSet rs) throws SQLException {
         return new User(
             rs.getInt("user_id"),
             rs.getString("full_name"),

@@ -40,4 +40,5 @@
             </VBox.margin></Button>
       </children></VBox>
    <Button layoutX="533.0" layoutY="336.0" mnemonicParsing="false" styleClass="logout" text="Return" />
+   <Label layoutX="447.0" layoutY="20.0" text="Admin" />
 </AnchorPane>

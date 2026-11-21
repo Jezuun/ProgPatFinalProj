@@ -16,7 +16,7 @@
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <Label alignment="CENTER" layoutX="123.0" layoutY="79.0" prefHeight="17.0" prefWidth="477.0" text="Select a participant to view" />
+        <Label alignment="CENTER" layoutX="123.0" layoutY="79.0" prefHeight="17.0" prefWidth="477.0" text="Select a conference to view" />
         <Label layoutX="489.0" layoutY="14.0" text="Admin" />
         <ToggleButton layoutX="535.0" layoutY="10.0" mnemonicParsing="false" styleClass="language" stylesheets="@buttons.css" text="Language" />
         <TableView layoutX="193.0" layoutY="152.0" prefHeight="200.0" prefWidth="357.0">
