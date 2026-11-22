@@ -76,23 +76,41 @@ public class ConfListController {
 
     @FXML
     private void goBack(ActionEvent event) {
-        openScreen(event, "/UserDashboard.fxml", "User Dashboard", "Could not return to User Dashboard");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserDashboard.fxml"));
+            Parent root = loader.load();
+
+            DashboardController controller = loader.getController();
+            controller.setUser(currentUser);
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("User Dashboard");
+        } catch (IOException e) {
+            showMessage(Alert.AlertType.ERROR, "Error", "Could not return to User Dashboard");
+        }
     }
 
     @FXML
     public void view() {
         Conference selected = conferenceList.getSelectionModel().getSelectedItem();
-
         if (selected == null) {
             showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first.");
             return;
         }
+        int confirmedParticipants = RegistrationDao.findRegistCountById(selected.getConferenceId());
+        int availableSeats = selected.getCapacity() - confirmedParticipants;
 
         titleLabel.setText(selected.getTitle());
         idLabel.setText(String.valueOf(selected.getConferenceId()));
         startLabel.setText(selected.getStartDateTime());
         endLabel.setText(selected.getEndDateTime());
         capacityLabel.setText(String.valueOf(selected.getCapacity()));
+        confirmedLabel.setText(String.valueOf(confirmedParticipants));
+        if(availableSeats > 0)
+            availableLabel.setText(String.valueOf(availableSeats));
+        else
+            availableLabel.setText("Full");
     }
 
     @FXML
@@ -102,6 +120,13 @@ public class ConfListController {
             showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first.");
             return;
         }
+
+        String status = RegistrationDao.findStatus(selected.getConferenceId(),currentUser.getUserId());
+        if (status != null) {
+            showMessage(Alert.AlertType.WARNING,"Already Registered","You already have a registration for this conference.");
+            return;
+        }
+
         int confirmedParticipants = RegistrationDao.findRegistCountById(selected.getConferenceId());
         int waitingListPos = RegistrationDao.findHighestWLPos(selected.getConferenceId()) + 1;
         LocalDateTime now = LocalDateTime.now();
@@ -121,21 +146,6 @@ public class ConfListController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private void openScreen(ActionEvent event, String fxmlPath, String title, String errorMsg) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle(title);
-        } catch (IOException e) {
-            showMessage(Alert.AlertType.ERROR, "Error", errorMsg);
-        }
     }
 
     public void setUser(User user) {

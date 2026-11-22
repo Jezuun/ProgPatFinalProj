@@ -16,15 +16,15 @@
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="271.3333435058594" layoutY="132.0" prefHeight="17.0" prefWidth="30.0" text="Title:" />
-        <Label layoutX="223.33334350585938" layoutY="159.3333282470703" text="Conference ID:" />
-        <Label layoutX="273.3333435058594" layoutY="186.6666717529297" text="Start:" />
-        <Label layoutX="278.6666564941406" layoutY="214.0" text="End:" />
-        <Label layoutX="264.3333435058594" layoutY="241.33334350585938" text="Status:" />
-        <Button layoutX="304.0" layoutY="297.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" styleClass="view" text="View" />
-        <Button layoutX="454.0" layoutY="297.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" styleClass="cancel" text="Cancel registrations" />
-        <Button layoutX="603.0" layoutY="349.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="71.0" styleClass="logout" text="Return" />
-        <ToggleButton layoutX="610.0" layoutY="14.0" mnemonicParsing="false" styleClass="language" text="Language" />
+        <Label fx:id="titleLabel" layoutX="271.3333435058594" layoutY="132.0" prefHeight="17.0" prefWidth="30.0" text="Title:" />
+        <Label fx:id="idLabel" layoutX="223.33334350585938" layoutY="159.3333282470703" text="Conference ID:" />
+        <Label fx:id="startLabel" layoutX="273.3333435058594" layoutY="186.6666717529297" text="Start:" />
+        <Label fx:id="endLabel" layoutX="278.6666564941406" layoutY="214.0" text="End:" />
+        <Label fx:id="statusLabel" layoutX="264.3333435058594" layoutY="241.33334350585938" text="Status:" />
+        <Button layoutX="304.0" layoutY="297.0" mnemonicParsing="false" onAction="#view" prefHeight="25.0" prefWidth="126.0" styleClass="view" text="View" />
+        <Button layoutX="454.0" layoutY="297.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="126.0" styleClass="cancel" text="Cancel registrations" />
+        <Button layoutX="603.0" layoutY="349.0" mnemonicParsing="false" onAction="#goBack" prefHeight="28.0" prefWidth="71.0" styleClass="logout" text="Return" />
+        <ToggleButton fx:id="lang" layoutX="610.0" layoutY="14.0" mnemonicParsing="false" onAction="#toggleLang" styleClass="language" text="Language" />
         <Label layoutX="536.0" layoutY="18.0" text="Participant" />
         <Label alignment="CENTER" layoutX="155.0" layoutY="75.0" prefHeight="17.0" prefWidth="538.0" text="Select a conference to view" />
     </children>

@@ -2,6 +2,7 @@ package com.conference.dao;
 
 import com.conference.db.Database;
 import com.conference.exception.DataAccessException;
+import com.conference.model.Conference;
 import com.conference.model.Registration;
 import com.conference.model.RegistrationStatus;
 
@@ -72,7 +73,7 @@ public class RegistrationDao {
         }
     }
 
-    public void updateStatus(int registrationId, RegistrationStatus status, Integer waitlistPosition) {
+    public static void updateStatus(int registrationId, RegistrationStatus status, Integer waitlistPosition) {
         String sql = "UPDATE registrations SET status = ?, waitlist_position = ? WHERE registration_id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -132,6 +133,34 @@ public class RegistrationDao {
         return 0;
     }
 
+    public static List<Conference> findRegisteredConferences(int userId) {
+        List<Conference> list = new ArrayList<>();
+        String sql = "SELECT c.* FROM conferences c INNER JOIN registrations r ON c.conference_id = r.conference_id WHERE r.user_id = ? AND (r.status = 'CONFIRMED' OR r.status = 'WAITLISTED')";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Conference(
+                            rs.getInt("conference_id"),
+                            rs.getString("title"),
+                            rs.getInt("capacity"),
+                            rs.getString("start_date_time"),
+                            rs.getString("end_date_time"),
+                            rs.getString("location")
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not find registered conferences for user: " + userId, e);
+            throw new DataAccessException("Failed to find registered conferences", e);
+        }
+
+        return list;
+    }
+
     public static int findHighestWLPos(int conferenceId) {
         String sql = "SELECT MAX(waitlist_position) FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED'";
 
@@ -149,5 +178,25 @@ public class RegistrationDao {
             throw new DataAccessException("Failed to find highest waitlist position", e);
         }
         return 0;
+    }
+
+    public static String findStatus(int conferenceId, int userId) {
+        String sql = "SELECT status FROM registrations WHERE conference_id = ? AND user_id = ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, conferenceId);
+            stmt.setInt(2, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next())
+                    return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,
+                    "Could not find registration status for conference: " + conferenceId, e);
+            throw new DataAccessException("Failed to find registration status", e);
+        }
+        return null;
     }
 }
