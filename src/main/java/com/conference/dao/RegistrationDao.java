@@ -50,7 +50,7 @@ public class RegistrationDao {
         return list;
     }
 
-    public void create(Registration reg) {
+    public static void create(Registration reg) {
         String sql = "INSERT INTO registrations (user_id, conference_id, status, waitlist_position, registration_date) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -112,5 +112,42 @@ public class RegistrationDao {
             waitlistPos,
             rs.getString("registration_date")
         );
+    }
+
+    public static int findRegistCountById(int conferenceId) {
+        String sql = "SELECT COUNT(*) FROM registrations WHERE conference_id = ? AND status = 'CONFIRMED'";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, conferenceId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,
+                    "Could not count registrations for conference: " + conferenceId, e);
+            throw new DataAccessException("Failed to count registrations", e);
+        }
+        return 0;
+    }
+
+    public static int findHighestWLPos(int conferenceId) {
+        String sql = "SELECT MAX(waitlist_position) FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED'";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, conferenceId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,
+                    "Could not find highest waitlist position for conference: " + conferenceId, e);
+            throw new DataAccessException("Failed to find highest waitlist position", e);
+        }
+        return 0;
     }
 }

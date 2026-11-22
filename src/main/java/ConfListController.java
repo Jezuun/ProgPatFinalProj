@@ -1,5 +1,9 @@
 import com.conference.dao.ConferenceDao;
+import com.conference.dao.RegistrationDao;
 import com.conference.model.Conference;
+import com.conference.model.Registration;
+import com.conference.model.RegistrationStatus;
+import com.conference.model.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,9 +18,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ConfListController {
+    private User currentUser;
     @FXML
     private TableView<Conference> conferenceList;
     @FXML
@@ -91,7 +97,22 @@ public class ConfListController {
 
     @FXML
     private void register() {
+        Conference selected = conferenceList.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first.");
+            return;
+        }
+        int confirmedParticipants = RegistrationDao.findRegistCountById(selected.getConferenceId());
+        int waitingListPos = RegistrationDao.findHighestWLPos(selected.getConferenceId()) + 1;
+        LocalDateTime now = LocalDateTime.now();
 
+        if(confirmedParticipants >= selected.getCapacity())
+            RegistrationDao.create(new Registration(0, currentUser.getUserId(), selected.getConferenceId(), RegistrationStatus.WAITLISTED, waitingListPos, now.toString()));
+        else {
+            RegistrationDao.create(new Registration(0, currentUser.getUserId(), selected.getConferenceId(), RegistrationStatus.CONFIRMED, null, now.toString()));
+        }
+
+        showMessage(Alert.AlertType.INFORMATION, "Registration", "You are now registered.");
     }
 
     private void showMessage(Alert.AlertType type, String title, String message) {
@@ -106,11 +127,18 @@ public class ConfListController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
+
+
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(title);
         } catch (IOException e) {
             showMessage(Alert.AlertType.ERROR, "Error", errorMsg);
         }
+    }
+
+    public void setUser(User user) {
+        currentUser = user;
     }
 }

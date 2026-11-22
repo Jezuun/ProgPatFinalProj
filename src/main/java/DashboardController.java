@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class DashboardController {
+    private User currentUser;
     @FXML
     private Label name;
     @FXML
@@ -24,27 +25,27 @@ public class DashboardController {
 
     @FXML
     private void logOut(ActionEvent event) {
-        openScreen(event, "/Login.fxml", "Login", "Could not log out.");
+        openScreen(event, "/Login.fxml", "Login", "Could not log out.", 0);
     }
 
     @FXML
     private void viewConferences(ActionEvent event) {
-        openScreen(event, "/ConferenceList.fxml", "Conference List", "Could not open Conference List.");
+        openScreen(event, "/ConferenceList.fxml", "Conference List", "Could not open Conference List.", 1);
     }
 
     @FXML
     private void myRegistrations(ActionEvent event) {
-        openScreen(event, "/MyRegistrations.fxml", "Registrations List", "Could not open Registrations List.");
+        openScreen(event, "/MyRegistrations.fxml", "Registrations List", "Could not open Registrations List.", 2);
     }
 
     @FXML
     private void myWaitingList(ActionEvent event) {
-        openScreen(event, "/MyWaitingList.fxml", "Waiting-List", "Could not open Waiting-List.");
+        openScreen(event, "/MyWaitingList.fxml", "Waiting-List", "Could not open Waiting-List.", 3);
     }
 
     @FXML
     private void myProfile(ActionEvent event) {
-        openScreen(event, "/MyProfile.fxml", "Profile", "Could not open Profile.");
+        openScreen(event, "/MyProfile.fxml", "Profile", "Could not open Profile.", 4);
     }
 
     @FXML
@@ -63,10 +64,30 @@ public class DashboardController {
         alert.showAndWait();
     }
 
-    private void openScreen(ActionEvent event, String fxmlPath, String title, String errorMsg) {
+    private void openScreen(ActionEvent event, String fxmlPath, String title, String errorMsg, int button) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
+
+            switch(button) {
+                case 0: {
+                    ConfListController controller = loader.getController();
+                    controller.setUser(currentUser);
+                }
+                case 1: {
+
+                }
+                case 2: {
+
+                }
+                case 3: {
+
+                }
+                case 4: {
+
+                }
+            }
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(title);
@@ -77,5 +98,6 @@ public class DashboardController {
 
     public void setUser(User user) {
         name.setText("Name: " + user.getFullName());
+        currentUser = user;
     }
 }
