@@ -39,9 +39,10 @@ public class AdminControlPanelController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(title);
-        } catch (IOException e) {
-            showMessage(Alert.AlertType.ERROR, "Error", "Could not open the screen.");
-        }
+        }  catch (IOException e) {
+        e.printStackTrace();
+        showMessage(Alert.AlertType.ERROR, "Error", "Could not open the screen: " + e.getMessage());
+    }
     }
 
     private void showMessage(Alert.AlertType type, String title, String message) {
