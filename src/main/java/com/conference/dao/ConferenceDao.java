@@ -95,7 +95,7 @@ public class ConferenceDao {
         }
     }
 
-    private Conference mapConference(ResultSet rs) throws SQLException {
+    private static Conference mapConference(ResultSet rs) throws SQLException {
         return new Conference(
             rs.getInt("conference_id"),
             rs.getString("title"),
@@ -104,5 +104,38 @@ public class ConferenceDao {
             rs.getString("end_date_time"),
             rs.getString("location")
         );
+    }
+
+    public static List<Conference> getConferenceNames() {
+        List<Conference> list = new ArrayList<>();
+        String sql = "SELECT * FROM conferences";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapConference(rs));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "error getting all conferences", e);
+            throw new DataAccessException("failed to get conferences", e);
+        }
+        return list;
+    }
+
+    public Conference findByTitle(String conferenceTitle) {
+        String sql = "SELECT * FROM conferences WHERE title = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, conferenceTitle);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapConference(rs);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "could not find conference title: " + conferenceTitle, e);
+            throw new DataAccessException("unable to find conference", e);
+        }
+        return null;
     }
 }

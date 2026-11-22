@@ -1,3 +1,4 @@
+import com.conference.dao.UserDao;
 import com.conference.db.Database;
 import com.conference.model.User;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ public class DashboardController {
 
     @FXML
     private void initialize() {
-//        name.setText("Name: " + Database.UserDao.getFullName());  WIP
+        name.setText("Name: " + "placeholder");
     }
 
     @FXML
@@ -28,23 +29,23 @@ public class DashboardController {
     }
 
     @FXML
-    private void myConferences(ActionEvent event) {
-        openScreen(event, "/ConferenceList.fxml", "My Conferences", "Could not open My Conferences.");
+    private void viewConferences(ActionEvent event) {
+        openScreen(event, "/ConferenceList.fxml", "Conference List", "Could not open Conference List.");
     }
 
     @FXML
     private void myRegistrations(ActionEvent event) {
-        openScreen(event, "/MyRegistrations.fxml", "My Registrations List", "Could not open My Registrations List.");
+        openScreen(event, "/MyRegistrations.fxml", "Registrations List", "Could not open Registrations List.");
     }
 
     @FXML
     private void myWaitingList(ActionEvent event) {
-        openScreen(event, "/MyWaitingList.fxml", "My Waiting-List", "Could not open My Waiting-List.");
+        openScreen(event, "/MyWaitingList.fxml", "Waiting-List", "Could not open Waiting-List.");
     }
 
     @FXML
     private void myProfile(ActionEvent event) {
-        openScreen(event, "/MyProfile.fxml", "My Profile", "Could not open My Profile.");
+        openScreen(event, "/MyProfile.fxml", "Profile", "Could not open Profile.");
     }
 
     @FXML
