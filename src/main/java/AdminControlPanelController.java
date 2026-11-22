@@ -40,8 +40,7 @@ public class AdminControlPanelController {
             stage.setScene(new Scene(root));
             stage.setTitle(title);
         }  catch (IOException e) {
-        e.printStackTrace();
-        showMessage(Alert.AlertType.ERROR, "Error", "Could not open the screen: " + e.getMessage());
+            showMessage(Alert.AlertType.ERROR, "Error", "Could not open the screen: " + e.getMessage());
     }
     }
 
