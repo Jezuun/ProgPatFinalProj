@@ -49,22 +49,30 @@ public class LogInController {
             return;
         }
 
-        if (user.getRole() == Role.ADMINISTRATOR) {
-            openScreen(event, "/AdminControlPanel.fxml", "Admin Control Panel");
-        } else {
-            openScreen(event, "/UserDashboard.fxml", "Dashboard");
-        }
+        if (user.getRole() == Role.ADMINISTRATOR)
+            openScreen(event, "/AdminControlPanel.fxml", "Admin Control Panel", user);
+        else
+            openScreen(event, "/UserDashboard.fxml", "Dashboard", user);
     }
 
     @FXML
     private void signUp(ActionEvent event){
-        openScreen(event,"/signUp.fxml", "Sign up");
+        openScreen(event,"/signUp.fxml", "Sign up", null);
     }
 
-    private void openScreen(ActionEvent event, String fxmlPath, String title) {
+    private void openScreen(ActionEvent event, String fxmlPath, String title, User user) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
+            
+            if (user.getRole() == Role.ADMINISTRATOR) {
+                AdminControlPanelController controller = loader.getController();
+                controller.setUser(user);
+            } else {
+                DashboardController controller = loader.getController();
+                controller.setUser(user);
+            }
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(title);

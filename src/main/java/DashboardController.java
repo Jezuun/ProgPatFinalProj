@@ -14,13 +14,12 @@ import java.io.IOException;
 
 public class DashboardController {
     @FXML
-    private Label name; //WIP
+    private Label name;
     @FXML
     private ToggleButton lang;
 
     @FXML
     private void initialize() {
-        name.setText("Name: " + "placeholder");
     }
 
     @FXML
@@ -74,5 +73,9 @@ public class DashboardController {
         } catch (IOException e) {
             showMessage(Alert.AlertType.ERROR, "Error", errorMsg);
         }
+    }
+
+    public void setUser(User user) {
+        name.setText("Name: " + user.getFullName());
     }
 }
