@@ -15,7 +15,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         setUpDatabase();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/Login.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("Conference Management System");
         stage.setScene(scene);

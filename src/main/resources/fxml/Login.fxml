@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="353.0" prefWidth="600.0" stylesheets="@../buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogInController">
+   <children>
+      <Label alignment="CENTER" layoutY="56.0" prefHeight="27.0" prefWidth="600.0" text="Login">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="72.0" layoutY="97.0" text="Email Address:" />
+      <TextField fx:id="email" layoutX="72.0" layoutY="122.0" prefHeight="25.0" prefWidth="441.0" />
+      <Label layoutX="72.0" layoutY="174.0" text="Password:" />
+      <PasswordField fx:id="passwd" layoutX="74.0" layoutY="198.0" onAction="#login" prefHeight="25.0" prefWidth="441.0" />
+       <Button layoutX="111.0" layoutY="263.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="155.0" styleClass="login" text="Log in" />
+      <Button layoutX="360.0" layoutY="263.0" mnemonicParsing="false" onAction="#signUp" prefHeight="25.0" prefWidth="155.0" styleClass="signup" text="Sign Up" />
+      <ToggleButton fx:id="lang" layoutX="497.0" layoutY="14.0" mnemonicParsing="false" styleClass="language" onAction="#toggleLang" text="Language" />
+   </children>
+</AnchorPane>

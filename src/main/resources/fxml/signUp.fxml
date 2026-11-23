@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="405.0" prefWidth="600.0" stylesheets="@../buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUpController">
+   <children>
+      <Label alignment="CENTER" layoutY="39.0" prefHeight="17.0" prefWidth="600.0" text="Sign up">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <ToggleButton layoutX="495.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" styleClass="language" text="Language" />
+       <Button layoutX="248.0" layoutY="344.0" mnemonicParsing="false" onAction="#createUser" prefHeight="25.0" prefWidth="105.0" styleClass="signup" text="Sign Up" />
+      <Button layoutX="435.0" layoutY="344.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" style="" styleClass="login" text="Log In" />
+      <VBox layoutX="16.0" layoutY="102.0" prefHeight="200.0" prefWidth="570.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="90.0" text="Full name:" />
+             <TextField fx:id="fullName" prefHeight="25.0" prefWidth="570.0">               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></TextField>
+            <Label prefHeight="17.0" prefWidth="90.0" text="Email Address:" />
+             <TextField fx:id="email" prefHeight="25.0" prefWidth="571.0">               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></TextField>
+            <Label prefHeight="17.0" prefWidth="90.0" text="Age:" />
+             <Spinner fx:id="age" prefHeight="25.0" prefWidth="194.0">
+                 <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Spinner>
+            <Label prefHeight="17.0" prefWidth="90.0" text="Password:" />
+             <PasswordField fx:id="passwd" prefHeight="25.0" prefWidth="571.0" />         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="451.0" prefWidth="617.0" stylesheets="@../../../../buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.ControlPanel.reports.WLReportController">
+   <children>
+      <TableView prefHeight="451.0" prefWidth="123.0">
+        <columns>
+          <TableColumn prefWidth="121.33331298828125" text="Conference List" />
+        </columns>
+      </TableView>
+      <Label alignment="CENTER" layoutX="123.0" layoutY="52.0" prefHeight="17.0" prefWidth="477.0" text="Waiting-List Report">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="123.0" layoutY="79.0" prefHeight="17.0" prefWidth="477.0" text="Select a conference to view" />
+      <Label layoutX="489.0" layoutY="14.0" text="Admin" />
+      <ToggleButton layoutX="535.0" layoutY="10.0" mnemonicParsing="false" styleClass="language" text="Language" />
+      <Label alignment="CENTER" layoutX="116.0" layoutY="125.0" prefHeight="17.0" prefWidth="487.0" text="Participants in the waiting-list" />
+      <TableView layoutX="193.0" layoutY="152.0" prefHeight="200.0" prefWidth="357.0">
+        <columns>
+          <TableColumn prefWidth="83.99998474121094" text="Position" />
+          <TableColumn minWidth="0.0" prefWidth="273.3333435058594" text="Participants" />
+        </columns>
+      </TableView>
+      <Button layoutX="322.0" layoutY="379.0" mnemonicParsing="false" styleClass="view" text="View" />
+      <Button layoutX="551.0" layoutY="404.0" mnemonicParsing="false" styleClass="logout" text="Return" />
+   </children>
+</AnchorPane>

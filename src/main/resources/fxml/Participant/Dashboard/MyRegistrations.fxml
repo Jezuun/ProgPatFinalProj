@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="393.0" prefWidth="693.0" stylesheets="@../../../buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Participant.Dashboard.MyRegistsController">
+    <children>
+        <TableView fx:id="conferenceList" prefHeight="393.0" prefWidth="158.0">
+            <columns>
+                <TableColumn fx:id="conferenceName" prefWidth="156.66665649414062" text="Conference List" />
+            </columns>
+        </TableView>
+        <Label alignment="CENTER" layoutX="156.0" layoutY="41.0" prefHeight="27.0" prefWidth="538.0" text="My Registrations">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label fx:id="titleLabel" layoutX="271.0" layoutY="132.0" prefHeight="17.0" prefWidth="422.0" text="Title:" />
+        <Label fx:id="idLabel" layoutX="223.0" layoutY="159.0" prefHeight="17.0" prefWidth="469.0" text="Conference ID:" />
+        <Label fx:id="startLabel" layoutX="273.0" layoutY="187.0" prefHeight="17.0" prefWidth="422.0" text="Start:" />
+        <Label fx:id="endLabel" layoutX="279.0" layoutY="214.0" prefHeight="17.0" prefWidth="413.0" text="End:" />
+        <Label fx:id="statusLabel" layoutX="264.0" layoutY="241.0" prefHeight="17.0" prefWidth="431.0" text="Status:" />
+        <Button layoutX="304.0" layoutY="297.0" mnemonicParsing="false" onAction="#view" prefHeight="25.0" prefWidth="126.0" styleClass="view" text="View" />
+        <Button layoutX="454.0" layoutY="297.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="126.0" styleClass="cancel" text="Cancel registrations" />
+        <Button layoutX="603.0" layoutY="349.0" mnemonicParsing="false" onAction="#goBack" prefHeight="28.0" prefWidth="71.0" styleClass="logout" text="Return" />
+        <ToggleButton fx:id="lang" layoutX="610.0" layoutY="14.0" mnemonicParsing="false" onAction="#toggleLang" styleClass="language" text="Language" />
+        <Label layoutX="536.0" layoutY="18.0" text="Participant" />
+        <Label alignment="CENTER" layoutX="155.0" layoutY="75.0" prefHeight="17.0" prefWidth="538.0" text="Select a conference to view" />
+    </children>
+</AnchorPane>

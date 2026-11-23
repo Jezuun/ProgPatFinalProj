@@ -1,4 +1,6 @@
 
+import Admin.AdminControlPanelController;
+import Participant.DashboardController;
 import com.conference.model.Role;
 import com.conference.model.User;
 import com.conference.validation.Validate;
@@ -11,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class LogInController {
@@ -52,12 +53,12 @@ public class LogInController {
         if (user.getRole() == Role.ADMINISTRATOR)
             openScreen(event, "/AdminControlPanel.fxml", "Admin Control Panel", user);
         else
-            openScreen(event, "/UserDashboard.fxml", "Dashboard", user);
+            openScreen(event, "/fxml/Participant/UserDashboard.fxml", "Dashboard", user);
     }
 
     @FXML
     private void signUp(ActionEvent event){
-        openScreen(event,"/signUp.fxml", "Sign up", null);
+        openScreen(event, "/fxml/signUp.fxml", "Sign up", null);
     }
 
     private void openScreen(ActionEvent event, String fxmlPath, String title, User user) {

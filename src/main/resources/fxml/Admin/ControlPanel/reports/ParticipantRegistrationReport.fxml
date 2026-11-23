@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="451.0" prefWidth="617.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.ControlPanel.reports.PartRegistReportController">
+    <children>
+        <TableView prefHeight="451.0" prefWidth="123.0">
+            <columns>
+                <TableColumn prefWidth="121.33331298828125" text="Participant List" />
+            </columns>
+        </TableView>
+        <Label alignment="CENTER" layoutX="123.0" layoutY="52.0" prefHeight="17.0" prefWidth="477.0" text="Participant Registration Report">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="123.0" layoutY="79.0" prefHeight="17.0" prefWidth="477.0" text="Select a participant to view" />
+        <Label layoutX="489.0" layoutY="14.0" text="Admin" />
+        <ToggleButton layoutX="535.0" layoutY="10.0" mnemonicParsing="false" styleClass="language" stylesheets="@../../../../buttons.css" text="Language" />
+        <TableView layoutX="193.0" layoutY="152.0" prefHeight="200.0" prefWidth="357.0">
+            <columns>
+                <TableColumn prefWidth="264.66661071777344" text="Conferences" />
+                <TableColumn minWidth="0.0" prefWidth="94.00003051757812" text="Status" />
+            </columns>
+        </TableView>
+        <Button layoutX="308.0" layoutY="378.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="107.0" styleClass="view" stylesheets="@../../../../buttons.css" text="View" />
+        <Button layoutX="551.0" layoutY="404.0" mnemonicParsing="false" styleClass="logout" stylesheets="@../../../../buttons.css" text="Return" />
+    </children>
+</AnchorPane>
