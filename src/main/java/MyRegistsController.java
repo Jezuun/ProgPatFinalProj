@@ -41,6 +41,9 @@ public class MyRegistsController {
 
     @FXML
     private void initialize() {
+        conferenceName.setCellValueFactory(
+                cell -> new SimpleStringProperty(cell.getValue().getTitle())
+        );
     }
 
     @FXML
@@ -51,9 +54,6 @@ public class MyRegistsController {
 
         list.addAll(conferences);
 
-        conferenceName.setCellValueFactory(
-                cell -> new SimpleStringProperty(cell.getValue().getTitle())
-        );
 
         conferenceList.setItems(list);
     }
@@ -70,34 +70,44 @@ public class MyRegistsController {
     public void view() {
         Conference selected = conferenceList.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first.");
+            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first");
             return;
         }
         String status = RegistrationDao.findStatus(selected.getConferenceId(), currentUser.getUserId());
 
-        titleLabel.setText(selected.getTitle());
-        idLabel.setText(String.valueOf(selected.getConferenceId()));
-        startLabel.setText(selected.getStartDateTime());
-        endLabel.setText(selected.getEndDateTime());
+        titleLabel.setText("Title: " + selected.getTitle());
+        idLabel.setText("Conference ID: " + selected.getConferenceId());
+        startLabel.setText("Start: " + selected.getStartDateTime());
+        endLabel.setText("End: " + selected.getEndDateTime());
         if(status != null)
-            statusLabel.setText(status);
+            statusLabel.setText("Status: " + status);
         else
-            statusLabel.setText("Unknown");
+            statusLabel.setText("Status: " + "Unknown");
     }
 
     @FXML
     public void cancel() {
         Conference selected = conferenceList.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first.");
+            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first");
             return;
         }
-        String status = RegistrationDao.findStatus(selected.getConferenceId(), currentUser.getUserId());
-        if(status != null &&
-                (status.equalsIgnoreCase(RegistrationStatus.CONFIRMED.toString()) ||
-                status.equalsIgnoreCase(RegistrationStatus.WAITLISTED.toString())))
-            RegistrationDao.updateStatus(selected.getConferenceId(), RegistrationStatus.CANCELLED, null);
-        loadConferenceList();
+        try {
+            int userId = currentUser.getUserId();
+            int conferenceId = selected.getConferenceId();
+            String status = RegistrationDao.findStatus(conferenceId, userId);
+            if (status != null &&(status.equalsIgnoreCase("CONFIRMED") || status.equalsIgnoreCase("WAITLISTED"))) {
+                RegistrationDao.updateStatus(userId, conferenceId, RegistrationStatus.CANCELLED, null);
+                showMessage(Alert.AlertType.INFORMATION, "Cancelled", "Your registration has been cancelled");
+            }
+            else
+                showMessage(Alert.AlertType.WARNING, "Cannot Cancel", "You do not have an active registration");
+
+            loadConferenceList();
+        }
+        catch (RuntimeException e) {
+            showMessage(Alert.AlertType.ERROR, "Error", "Could not cancel registration: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -126,7 +136,7 @@ public class MyRegistsController {
     }
 
     public void setUser(User user) {
-        currentUser = user;
+        this.currentUser = user;
         loadConferenceList();
     }
 }

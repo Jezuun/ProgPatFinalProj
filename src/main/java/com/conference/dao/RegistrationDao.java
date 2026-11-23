@@ -62,7 +62,7 @@ public class RegistrationDao {
             if (reg.getWaitlistPosition() != null) {
                 stmt.setInt(4, reg.getWaitlistPosition());
             } else {
-                stmt.setString(4, null);
+                stmt.setNull(4, java.sql.Types.INTEGER);
             }
             stmt.setString(5, reg.getRegistrationDate());
             stmt.executeUpdate();
@@ -73,20 +73,21 @@ public class RegistrationDao {
         }
     }
 
-    public static void updateStatus(int registrationId, RegistrationStatus status, Integer waitlistPosition) {
-        String sql = "UPDATE registrations SET status = ?, waitlist_position = ? WHERE registration_id = ?";
+    public static void updateStatus(int userId, int conferenceId, RegistrationStatus status, Integer waitlistPosition) {
+        String sql = "UPDATE registrations SET status = ?, waitlist_position = ? WHERE user_id = ? AND conference_id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, status.name());
             if (waitlistPosition != null) {
                 stmt.setInt(2, waitlistPosition);
             } else {
-                stmt.setString(2, null);
+                stmt.setNull(2, java.sql.Types.INTEGER);
             }
-            stmt.setInt(3, registrationId);
+            stmt.setInt(3, userId);
+            stmt.setInt(4, conferenceId);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "cant updating registration status: " + registrationId, e);
+            LOGGER.log(Level.SEVERE, "cant update registration status: " + userId, e);
             throw new DataAccessException("failed to update registration status", e);
         }
     }

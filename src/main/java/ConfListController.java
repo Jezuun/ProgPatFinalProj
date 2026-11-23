@@ -1,5 +1,6 @@
 import com.conference.dao.ConferenceDao;
 import com.conference.dao.RegistrationDao;
+import com.conference.exception.DataAccessException;
 import com.conference.model.Conference;
 import com.conference.model.Registration;
 import com.conference.model.RegistrationStatus;
@@ -95,49 +96,68 @@ public class ConfListController {
     public void view() {
         Conference selected = conferenceList.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first.");
+            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first");
             return;
         }
         int confirmedParticipants = RegistrationDao.findRegistCountById(selected.getConferenceId());
         int availableSeats = selected.getCapacity() - confirmedParticipants;
 
-        titleLabel.setText(selected.getTitle());
-        idLabel.setText(String.valueOf(selected.getConferenceId()));
-        startLabel.setText(selected.getStartDateTime());
-        endLabel.setText(selected.getEndDateTime());
-        capacityLabel.setText(String.valueOf(selected.getCapacity()));
-        confirmedLabel.setText(String.valueOf(confirmedParticipants));
+        titleLabel.setText("Title: " + selected.getTitle());
+        idLabel.setText("Conference ID: " + selected.getConferenceId());
+        startLabel.setText("Start: " + selected.getStartDateTime());
+        endLabel.setText("End: " + selected.getEndDateTime());
+        capacityLabel.setText("Capacity: " + selected.getCapacity());
+        confirmedLabel.setText("Confirmed Participants: " + confirmedParticipants);
         if(availableSeats > 0)
-            availableLabel.setText(String.valueOf(availableSeats));
+            availableLabel.setText("Available Seats: " + availableSeats);
         else
-            availableLabel.setText("Full");
+            availableLabel.setText("Available Seats: " + "Full");
     }
 
     @FXML
     private void register() {
         Conference selected = conferenceList.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first.");
+            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first");
             return;
         }
+        try {
+            int userId = currentUser.getUserId();
+            int conferenceId = selected.getConferenceId();
+            String status = RegistrationDao.findStatus(conferenceId,userId);
+            if (status != null && (status.equalsIgnoreCase("CONFIRMED") || status.equalsIgnoreCase("WAITLISTED"))) {
+                showMessage(Alert.AlertType.WARNING,"Already Registered","You already have a registration for this conference");
+                return;
+            }
 
-        String status = RegistrationDao.findStatus(selected.getConferenceId(),currentUser.getUserId());
-        if (status != null) {
-            showMessage(Alert.AlertType.WARNING,"Already Registered","You already have a registration for this conference.");
-            return;
+            int confirmedParticipants = RegistrationDao.findRegistCountById(selected.getConferenceId());
+            int waitingListPos = RegistrationDao.findHighestWLPos(selected.getConferenceId()) + 1;
+            LocalDateTime now = LocalDateTime.now();
+            RegistrationStatus newStatus;
+            Integer newWLPos;
+
+            if (confirmedParticipants >= selected.getCapacity()) {
+                newStatus = RegistrationStatus.WAITLISTED;
+                newWLPos = waitingListPos;
+            } else {
+                newStatus = RegistrationStatus.CONFIRMED;
+                newWLPos = null;
+            }
+            if("CANCELLED".equalsIgnoreCase(status))
+                RegistrationDao.updateStatus(userId, conferenceId, newStatus, newWLPos);
+            else {
+                Registration regist = new Registration(0, userId, conferenceId, newStatus, newWLPos, now.toString());
+                RegistrationDao.create(regist);
+            }
+
+            if (newStatus == RegistrationStatus.CONFIRMED)
+                showMessage(Alert.AlertType.INFORMATION, "Registration Successful", "You are now confirmed for this conference");
+            else
+                showMessage(Alert.AlertType.INFORMATION, "Waitlisted", "The conference is full. You have been added to the waiting list at position " + newWLPos);
         }
-
-        int confirmedParticipants = RegistrationDao.findRegistCountById(selected.getConferenceId());
-        int waitingListPos = RegistrationDao.findHighestWLPos(selected.getConferenceId()) + 1;
-        LocalDateTime now = LocalDateTime.now();
-
-        if(confirmedParticipants >= selected.getCapacity())
-            RegistrationDao.create(new Registration(0, currentUser.getUserId(), selected.getConferenceId(), RegistrationStatus.WAITLISTED, waitingListPos, now.toString()));
-        else {
-            RegistrationDao.create(new Registration(0, currentUser.getUserId(), selected.getConferenceId(), RegistrationStatus.CONFIRMED, null, now.toString()));
+        catch (DataAccessException e) {
+            showMessage(Alert.AlertType.ERROR, "Registration Error", "Could not register for this conference: " + e.getMessage());
         }
-
-        showMessage(Alert.AlertType.INFORMATION, "Registration", "You are now registered.");
     }
 
     private void showMessage(Alert.AlertType type, String title, String message) {
@@ -149,6 +169,6 @@ public class ConfListController {
     }
 
     public void setUser(User user) {
-        currentUser = user;
+        this.currentUser = user;
     }
 }

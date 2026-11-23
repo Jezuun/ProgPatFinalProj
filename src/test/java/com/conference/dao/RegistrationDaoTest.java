@@ -39,9 +39,10 @@ class RegistrationDaoTest {
 
     @Test
     void testUpdateStatus() {
-        registrationDao.updateStatus(4, RegistrationStatus.CONFIRMED, null);
+        RegistrationDao.updateStatus(2, 1, RegistrationStatus.CONFIRMED, null);
 
-        Registration reg = registrationDao.findById(4);
+        Registration reg = registrationDao.findById(1);
+
         assertEquals(RegistrationStatus.CONFIRMED, reg.getStatus());
         assertNull(reg.getWaitlistPosition());
     }

@@ -67,24 +67,28 @@ public class DashboardController {
     private void openScreen(ActionEvent event, String fxmlPath, String title, String errorMsg, int button) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            System.out.println(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
             switch(button) {
                 case 0: {
-                    ConfListController controller = loader.getController();
-                    controller.setUser(currentUser);
+                    break;
                 }
                 case 1: {
-
+                    ConfListController controller = loader.getController();
+                    controller.setUser(currentUser);
+                    break;
                 }
                 case 2: {
-
+                    MyRegistsController controller = loader.getController();
+                    controller.setUser(currentUser);
+                    break;
                 }
                 case 3: {
-
+                    break;
                 }
                 case 4: {
-
+                    break;
                 }
             }
 
@@ -92,6 +96,7 @@ public class DashboardController {
             stage.setScene(new Scene(root));
             stage.setTitle(title);
         } catch (IOException e) {
+            e.printStackTrace();
             showMessage(Alert.AlertType.ERROR, "Error", errorMsg);
         }
     }

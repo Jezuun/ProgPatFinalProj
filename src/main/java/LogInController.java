@@ -64,13 +64,15 @@ public class LogInController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
-            
-            if (user.getRole() == Role.ADMINISTRATOR) {
-                AdminControlPanelController controller = loader.getController();
-                controller.setUser(user);
-            } else {
-                DashboardController controller = loader.getController();
-                controller.setUser(user);
+
+            if(user != null) {
+                if (user.getRole() == Role.ADMINISTRATOR) {
+                    AdminControlPanelController controller = loader.getController();
+                    controller.setUser(user);
+                } else if (user.getRole() == Role.PARTICIPANT) {
+                    DashboardController controller = loader.getController();
+                    controller.setUser(user);
+                }
             }
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
