@@ -54,7 +54,6 @@ public class ConfListController {
         loadConferenceList();
     }
 
-    @FXML
     private void loadConferenceList() {
         list.clear();
 
@@ -160,6 +159,7 @@ public class ConfListController {
         catch (DataAccessException e) {
             showMessage(Alert.AlertType.ERROR, "Registration Error", "Could not register for this conference: " + e.getMessage());
         }
+        view();
     }
 
     private void showMessage(Alert.AlertType type, String title, String message) {

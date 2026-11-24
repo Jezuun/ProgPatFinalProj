@@ -1,7 +1,9 @@
 package Participant;
 
 import Participant.Dashboard.ConfListController;
+import Participant.Dashboard.MyProfileController;
 import Participant.Dashboard.MyRegistsController;
+import Participant.Dashboard.MyWLController;
 import com.conference.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -87,9 +89,13 @@ public class DashboardController {
                     break;
                 }
                 case 3: {
+                    MyWLController controller = loader.getController();
+                    controller.setUser(currentUser);
                     break;
                 }
                 case 4: {
+                    MyProfileController controller = loader.getController();
+                    controller.setUser(currentUser);
                     break;
                 }
             }
@@ -98,7 +104,6 @@ public class DashboardController {
             stage.setScene(new Scene(root));
             stage.setTitle(title);
         } catch (IOException e) {
-            e.printStackTrace();
             showMessage(Alert.AlertType.ERROR, "Error", errorMsg);
         }
     }

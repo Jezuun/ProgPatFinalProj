@@ -105,7 +105,7 @@ public class UserDao {
         return users;
     }
 
-    public void update(User user) {
+    public static void update(User user) {
         String sql = "UPDATE users SET full_name = ?, email = ?, age = ?, role = ? WHERE user_id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -141,5 +141,23 @@ public class UserDao {
             rs.getInt("age"),
             Role.valueOf(rs.getString("role"))
         );
+    }
+
+    public void updatePassword(int userId, String passwordHash) {
+
+        String sql = "UPDATE user_credentials SET password_hash = ? WHERE user_id = ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, passwordHash);
+            stmt.setInt(2, userId);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not update password", e);
+            throw new DataAccessException("Password update failed", e);
+        }
     }
 }

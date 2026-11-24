@@ -48,7 +48,6 @@ public class MyRegistsController {
         );
     }
 
-    @FXML
     private void loadConferenceList() {
         list.clear();
 

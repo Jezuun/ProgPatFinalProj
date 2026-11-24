@@ -11,25 +11,39 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-       <ToggleButton layoutX="500.0" layoutY="14.0" mnemonicParsing="false" styleClass="language" text="Language" />
+       <ToggleButton fx:id="lang" layoutX="500.0" layoutY="14.0" mnemonicParsing="false" onAction="#toggleLang" styleClass="language" text="Language" />
        <Label layoutX="428.0" layoutY="18.0" text="Participant" />
-      <VBox layoutX="79.0" layoutY="100.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+      <VBox layoutX="79.0" layoutY="100.0" prefHeight="179.0" prefWidth="296.0" spacing="10.0">
          <children>
-            <Label text="First Name:" />
-            <Label text="Email:" />
-            <Label text="Age:" />
-            <Label text="Password:" />
+            <Label fx:id="fullName" prefHeight="17.0" prefWidth="295.0" text="Full Name:" />
+            <Label fx:id="email" prefHeight="17.0" prefWidth="298.0" text="Email:" />
+            <Label fx:id="age" prefHeight="17.0" prefWidth="300.0" text="Age:" />
+            <Label prefHeight="17.0" prefWidth="298.0" text="Password:" />
          </children>
       </VBox>
-      <Button layoutX="238.0" layoutY="279.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" styleClass="update" text="Update" />
+      <Button layoutX="238.0" layoutY="279.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="124.0" styleClass="update" text="Update" />
       <VBox layoutX="381.0" layoutY="100.0" prefHeight="179.0" prefWidth="100.0" spacing="3.0">
          <children>
-            <TextField prefHeight="11.0" prefWidth="100.0" promptText="input to update" />
-            <TextField promptText="input to update" />
-            <TextField promptText="input to update" />
-            <TextField promptText="input to update" />
+            <TextField fx:id="fullNameTF"  promptText="input to update" />
+            <TextField fx:id="emailTF" promptText="input to update" />
+            <TextField fx:id="ageTF" promptText="input to update" />
+            <HBox spacing="5">
+               <children>
+                  <PasswordField fx:id="passwordPF"
+                                 promptText="New password"
+                                 prefWidth="100"/>
+
+                  <TextField fx:id="passwordTF"
+                             promptText="New password"
+                             prefWidth="100"
+                             visible="false"
+                             managed="false"/>
+               </children>
+            </HBox>
+            <ToggleButton fx:id="viewPasswd" mnemonicParsing="false" onAction="#viewPassword" prefHeight="25.0" prefWidth="100.0" styleClass="login" text="View Password" />
          </children>
       </VBox>
-      <Button layoutX="500.0" layoutY="314.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" styleClass="logout" text="Return" />
+      <Button layoutX="500.0" layoutY="314.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="68.0" styleClass="logout" text="Return" />
    </children>
+
 </AnchorPane>
