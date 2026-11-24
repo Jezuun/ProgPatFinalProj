@@ -25,7 +25,7 @@ public class AdminControlPanelController {
 
     @FXML
     private void openConference(ActionEvent event){
-        openScreen(event, "/conferenceManagement.fxml", "Conference Management");
+        openScreen(event, "/fxml/Admin/ControlPanel/ConferenceManagement.fxml", "Conference Management");
     }
 
     @FXML
@@ -47,7 +47,7 @@ public class AdminControlPanelController {
             stage.setTitle(title);
         }  catch (IOException e) {
             showMessage(Alert.AlertType.ERROR, "Error", "Could not open the screen: " + e.getMessage());
-    }
+        }
     }
 
     private void showMessage(Alert.AlertType type, String title, String message) {
