@@ -55,9 +55,11 @@ public class MyWLController {
         for(Conference c : conferences) {
             int confirmedParticipants = RegistrationDao.findRegistCountById(c.getConferenceId());
             if ((c.getCapacity() - confirmedParticipants > 0) &&
-                RegistrationDao.findStatus(c.getConferenceId(), currentUser.getUserId()).equalsIgnoreCase("WAITLISTED") &&
-            RegistrationDao.findWLPos(c.getConferenceId(), currentUser.getUserId()) == 1) {
+                    RegistrationDao.findStatus(c.getConferenceId(), currentUser.getUserId()).equalsIgnoreCase("WAITLISTED") &&
+                    RegistrationDao.findWLPos(c.getConferenceId(), currentUser.getUserId()) == 1) {
+                int promotedPosition = RegistrationDao.findWLPos(c.getConferenceId(), currentUser.getUserId());
                 RegistrationDao.updateStatus(currentUser.getUserId(), c.getConferenceId(), RegistrationStatus.CONFIRMED, null);
+                RegistrationDao.decrementWLPos(c.getConferenceId(), promotedPosition);
             }
         }
         list.addAll(conferences);

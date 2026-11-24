@@ -211,7 +211,7 @@ public class RegistrationDao {
     }
 
     public static int findHighestWLPos(int conferenceId) {
-        String sql = "SELECT MAX(waitlist_position) FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED'";
+        String sql = "SELECT COALESCE(MAX(waitlist_position), 0) FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED'";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -247,5 +247,22 @@ public class RegistrationDao {
             throw new DataAccessException("Failed to find registration status", e);
         }
         return null;
+    }
+
+    public static void decrementWLPos(int conferenceId, int newPosition) {
+        String sql = "UPDATE registrations SET waitlist_position = waitlist_position - 1 WHERE conference_id = ? AND status = 'WAITLISTED' AND waitlist_position > ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, conferenceId);
+            stmt.setInt(2, newPosition);
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,
+                    "Could not update waitlist positions", e);
+            throw new DataAccessException(
+                    "Failed to decrease waitlist positions", e);
+        }
     }
 }

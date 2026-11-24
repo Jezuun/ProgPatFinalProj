@@ -128,30 +128,29 @@ public class ConfListController {
                 return;
             }
 
-            int confirmedParticipants = RegistrationDao.findRegistCountById(selected.getConferenceId());
-            int waitingListPos = RegistrationDao.findHighestWLPos(selected.getConferenceId()) + 1;
+            int confirmedParticipants = RegistrationDao.findRegistCountById(conferenceId);
+            Integer waitingListPos = 0;
             LocalDateTime now = LocalDateTime.now();
             RegistrationStatus newStatus;
-            Integer newWLPos;
 
             if (confirmedParticipants >= selected.getCapacity()) {
+                waitingListPos = RegistrationDao.findHighestWLPos(conferenceId) + 1;
                 newStatus = RegistrationStatus.WAITLISTED;
-                newWLPos = waitingListPos;
             } else {
                 newStatus = RegistrationStatus.CONFIRMED;
-                newWLPos = null;
+                waitingListPos = null;
             }
             if("CANCELLED".equalsIgnoreCase(status))
-                RegistrationDao.updateStatus(userId, conferenceId, newStatus, newWLPos);
+                RegistrationDao.updateStatus(userId, conferenceId, newStatus, waitingListPos);
             else {
-                Registration regist = new Registration(0, userId, conferenceId, newStatus, newWLPos, now.toString());
+                Registration regist = new Registration(0, userId, conferenceId, newStatus, waitingListPos, now.toString());
                 RegistrationDao.create(regist);
             }
 
             if (newStatus == RegistrationStatus.CONFIRMED)
                 showMessage(Alert.AlertType.INFORMATION, "Registration Successful", "You are now confirmed for this conference");
             else
-                showMessage(Alert.AlertType.INFORMATION, "Waitlisted", "The conference is full. You have been added to the waiting list at position " + newWLPos);
+                showMessage(Alert.AlertType.INFORMATION, "Waitlisted", "The conference is full. You have been added to the waiting list at position " + waitingListPos);
         }
         catch (DataAccessException e) {
             showMessage(Alert.AlertType.ERROR, "Registration Error", "Could not register for this conference: " + e.getMessage());
