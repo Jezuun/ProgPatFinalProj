@@ -162,6 +162,54 @@ public class RegistrationDao {
         return list;
     }
 
+    public static List<Conference> findWaitListConferences(int userId) {
+        List<Conference> list = new ArrayList<>();
+        String sql = "SELECT c.* FROM conferences c INNER JOIN registrations r ON c.conference_id = r.conference_id WHERE r.user_id = ? AND r.status = 'WAITLISTED'";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Conference(
+                            rs.getInt("conference_id"),
+                            rs.getString("title"),
+                            rs.getInt("capacity"),
+                            rs.getString("start_date_time"),
+                            rs.getString("end_date_time"),
+                            rs.getString("location")
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not find registered conferences for user: " + userId, e);
+            throw new DataAccessException("Failed to find registered conferences", e);
+        }
+
+        return list;
+    }
+
+    public static int findWLPos(int conferenceId, int userId) {
+        String sql = "SELECT waitlist_position FROM registrations WHERE conference_id = ? AND user_id = ? AND status = 'WAITLISTED'";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, conferenceId);
+            stmt.setInt(2, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,
+                    "Could not find waitlist position for conference: " + conferenceId, e);
+            throw new DataAccessException("Failed to find waitlist position", e);
+        }
+        return 0;
+    }
+
     public static int findHighestWLPos(int conferenceId) {
         String sql = "SELECT MAX(waitlist_position) FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED'";
 

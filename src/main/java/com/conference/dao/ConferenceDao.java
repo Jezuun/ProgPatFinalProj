@@ -50,7 +50,7 @@ public class ConferenceDao {
         return null;
     }
 
-    public List<Conference> findAll() {
+    public static List<Conference> findAll() {
         List<Conference> list = new ArrayList<>();
         String sql = "SELECT * FROM conferences";
         try (Connection conn = Database.getConnection();

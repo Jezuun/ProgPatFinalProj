@@ -51,7 +51,7 @@ public class LogInController {
         }
 
         if (user.getRole() == Role.ADMINISTRATOR)
-            openScreen(event, "/AdminControlPanel.fxml", "Admin Control Panel", user);
+            openScreen(event, "/fxml/Admin/adminControlPanel.fxml", "Admin Control Panel", user);
         else
             openScreen(event, "/fxml/Participant/UserDashboard.fxml", "Dashboard", user);
     }

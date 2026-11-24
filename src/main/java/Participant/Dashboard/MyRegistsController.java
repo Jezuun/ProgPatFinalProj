@@ -50,12 +50,16 @@ public class MyRegistsController {
 
     private void loadConferenceList() {
         list.clear();
-
         List<Conference> conferences = RegistrationDao.findRegisteredConferences(currentUser.getUserId());
-
+        for(Conference c : conferences) {
+            int confirmedParticipants = RegistrationDao.findRegistCountById(c.getConferenceId());
+            if ((c.getCapacity() - confirmedParticipants > 0) &&
+                    RegistrationDao.findStatus(c.getConferenceId(), currentUser.getUserId()).equalsIgnoreCase("WAITLISTED") &&
+                    RegistrationDao.findWLPos(c.getConferenceId(), currentUser.getUserId()) == 1) {
+                RegistrationDao.updateStatus(currentUser.getUserId(), c.getConferenceId(), RegistrationStatus.CONFIRMED, null);
+            }
+        }
         list.addAll(conferences);
-
-
         conferenceList.setItems(list);
     }
 
@@ -84,6 +88,7 @@ public class MyRegistsController {
             statusLabel.setText("Status: " + status);
         else
             statusLabel.setText("Status: " + "Unknown");
+        loadConferenceList();
     }
 
     @FXML

@@ -93,7 +93,7 @@ public class CreateConfController {
     @FXML
     private void back(ActionEvent event){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminControlPanel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Admin/adminControlPanel.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

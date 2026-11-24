@@ -56,11 +56,8 @@ public class ConfListController {
 
     private void loadConferenceList() {
         list.clear();
-
         List<Conference> conferences = ConferenceDao.getConferenceNames();
-
         list.addAll(conferences);
-
         conferenceName.setCellValueFactory(
                 cell -> new SimpleStringProperty(cell.getValue().getTitle())
         );
