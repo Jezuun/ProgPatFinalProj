@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="375.0" prefWidth="600.0" stylesheets="@../../../buttons.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.ControlPanel.AdminReportsController">
+<AnchorPane prefHeight="375.0" prefWidth="600.0" stylesheets="@../../../buttons.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.ControlPanel.AdminReportsController">
     <Label alignment="CENTER" layoutY="39.0" prefHeight="17.0" prefWidth="600.0" text="Administrative Reports">
         <font>
             <Font name="System Bold" size="18.0" />
@@ -14,31 +17,31 @@
     <Label alignment="CENTER" layoutY="66.0" prefHeight="17.0" prefWidth="600.0" text="Select a report to view" />
    <VBox layoutX="199.0" layoutY="100.0" prefHeight="200.0" prefWidth="203.0">
       <children>
-         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Conference Overview" textAlignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#conferenceOverview" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Conference Overview" textAlignment="CENTER">
             <VBox.margin>
                <Insets bottom="5.0" />
             </VBox.margin></Button>
-         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Conference Participant Report" textAlignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#confParticipantReport" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Conference Participant Report" textAlignment="CENTER">
             <VBox.margin>
                <Insets bottom="5.0" />
             </VBox.margin></Button>
-         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Waiting-List Report" textAlignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#waitingListReports" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Waiting-List Report" textAlignment="CENTER">
             <VBox.margin>
                <Insets bottom="5.0" />
             </VBox.margin></Button>
-         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Participant Registration Report" textAlignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#registrationReports" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Participant Registration Report" textAlignment="CENTER">
             <VBox.margin>
                <Insets bottom="5.0" />
             </VBox.margin></Button>
-         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Conference Occupancy Report" textAlignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#conferenceOccupancy" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Conference Occupancy Report" textAlignment="CENTER">
             <VBox.margin>
                <Insets bottom="5.0" />
             </VBox.margin></Button>
-         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Unregistered Conference Report" textAlignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#unregisteredConference" prefHeight="30.0" prefWidth="203.0" styleClass="update" text="Unregistered Conference Report" textAlignment="CENTER">
             <VBox.margin>
                <Insets />
             </VBox.margin></Button>
       </children></VBox>
-   <Button layoutX="533.0" layoutY="336.0" mnemonicParsing="false" styleClass="logout" text="Return" />
+   <Button layoutX="533.0" layoutY="336.0" mnemonicParsing="false" onAction="#back" styleClass="logout" text="Return" />
    <Label layoutX="447.0" layoutY="20.0" text="Admin" />
 </AnchorPane>

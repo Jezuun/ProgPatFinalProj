@@ -14,17 +14,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 
 public class ConfMngmtController {
+
+    @FXML private TextField updTitle;
+    @FXML private DatePicker updStartDate;
+    @FXML private TextField updStartTime;
+    @FXML private DatePicker updEndDate;
+    @FXML private TextField updEndTime;
+    @FXML private TextField updCapacity;
     private User currentUser;
     @FXML
     private TableView<Conference> conferenceList;
@@ -111,6 +114,97 @@ public class ConfMngmtController {
             availableLabel.setText("Available Seats: " + availableSeats);
         else
             availableLabel.setText("Available Seats: " + "Full");
+    }
+
+    @FXML
+    private void update() {
+        Conference selected = conferenceList.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first");
+            return;
+        }
+
+        String newTitle = selected.getTitle();
+        int newCapacity = selected.getCapacity();
+        //format: 2026-11-24T09:00:00
+        String startDate = selected.getStartDateTime().substring(0, 10);
+        String startTime = selected.getStartDateTime().substring(11, 16);
+        String endDate = selected.getEndDateTime().substring(0, 10);
+        String endTime = selected.getEndDateTime().substring(11, 16);
+
+        if (!updTitle.getText().trim().isEmpty()) {
+            newTitle = updTitle.getText().trim();
+        }
+        if (updStartDate.getValue() != null) {
+            startDate = updStartDate.getValue().toString();
+        }
+        if (!updStartTime.getText().trim().isEmpty()) {
+            startTime = updStartTime.getText().trim();
+        }
+        if (updEndDate.getValue() != null) {
+            endDate = updEndDate.getValue().toString();
+        }
+        if (!updEndTime.getText().trim().isEmpty()) {
+            endTime = updEndTime.getText().trim();
+        }
+        if (!updCapacity.getText().trim().isEmpty()) {
+            try {
+                newCapacity = Integer.parseInt(updCapacity.getText().trim());
+            } catch (NumberFormatException e) {
+                showMessage(Alert.AlertType.ERROR, "Error", "Capacity must be a whole number");
+                return;
+            }
+            if (newCapacity <= 0) {
+                showMessage(Alert.AlertType.ERROR, "Error", "Capacity must be more than 0");
+                return;
+            }
+        }
+
+        if (!isValidTime(startTime) || !isValidTime(endTime)) {
+            showMessage(Alert.AlertType.ERROR, "Error", "Times must look like 09:00");
+            return;
+        }
+
+        String newStart = startDate + "T" + startTime + ":00";
+        String newEnd = endDate + "T" + endTime + ":00";
+        if (newEnd.compareTo(newStart) <= 0) {
+            showMessage(Alert.AlertType.ERROR, "Error", "The end must be after the start.");
+            return;
+        }
+
+        try {
+            selected.setTitle(newTitle);
+            selected.setCapacity(newCapacity);
+            selected.setStartDateTime(newStart);
+            selected.setEndDateTime(newEnd);
+            new ConferenceDao().update(selected);
+        } catch (RuntimeException e) {
+            showMessage(Alert.AlertType.ERROR, "Error", "Could not update the conference: " + e.getMessage());
+            return;
+        }
+
+        conferenceList.refresh();
+        view();
+        updTitle.clear();
+        updStartDate.setValue(null);
+        updStartTime.clear();
+        updEndDate.setValue(null);
+        updEndTime.clear();
+        updCapacity.clear();
+        showMessage(Alert.AlertType.INFORMATION, "Conference Updated", "The conference was updated.");
+    }
+
+    private boolean isValidTime(String time) {
+        if (time.length() != 5 || time.charAt(2) != ':') {
+            return false;
+        }
+        try {
+            int hour = Integer.parseInt(time.substring(0, 2));
+            int minute = Integer.parseInt(time.substring(3, 5));
+            return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private void showMessage(Alert.AlertType type, String title, String message) {
