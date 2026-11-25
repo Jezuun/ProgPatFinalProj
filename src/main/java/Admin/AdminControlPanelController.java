@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AdminControlPanelController {
-    private User currentUser;
     @FXML
     private Label name;
 
@@ -60,6 +59,5 @@ public class AdminControlPanelController {
 
     public void setUser(User user) {
         name.setText("Name: " + user.getFullName());
-        currentUser = user;
     }
 }
