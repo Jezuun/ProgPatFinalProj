@@ -51,7 +51,7 @@ public class LogInController {
         }
 
         if (user.getRole() == Role.ADMINISTRATOR)
-            openScreen(event, "/fxml/Admin/adminControlPanel.fxml", "Admin Control Panel", user);
+            openScreen(event, "/fxml/Admin/adminControlPanel.fxml", "Admin Control Panel", null);
         else
             openScreen(event, "/fxml/Participant/UserDashboard.fxml", "Dashboard", user);
     }
@@ -66,14 +66,9 @@ public class LogInController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            if(user != null) {
-                if (user.getRole() == Role.ADMINISTRATOR) {
-                    AdminControlPanelController controller = loader.getController();
-                    controller.setUser(user);
-                } else if (user.getRole() == Role.PARTICIPANT) {
-                    DashboardController controller = loader.getController();
-                    controller.setUser(user);
-                }
+            if(user != null && user.getRole() == Role.PARTICIPANT) {
+                DashboardController controller = loader.getController();
+                controller.setUser(user);
             }
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

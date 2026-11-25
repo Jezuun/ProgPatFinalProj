@@ -28,7 +28,6 @@ public class ConfMngmtController {
     @FXML private DatePicker updEndDate;
     @FXML private TextField updEndTime;
     @FXML private TextField updCapacity;
-    private User currentUser;
     @FXML
     private TableView<Conference> conferenceList;
     @FXML
@@ -80,12 +79,6 @@ public class ConfMngmtController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Admin/adminControlPanel.fxml"));
             Parent root = loader.load();
-
-            AdminControlPanelController controller = loader.getController();
-            if (currentUser != null) {
-                controller.setUser(currentUser);
-            }
-
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Admin Control Panel");
@@ -213,9 +206,5 @@ public class ConfMngmtController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    public void setUser(User user) {
-        this.currentUser = user;
     }
 }

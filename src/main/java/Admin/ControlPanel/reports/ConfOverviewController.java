@@ -1,10 +1,8 @@
 package Admin.ControlPanel.reports;
 
-import Admin.AdminControlPanelController;
 import com.conference.dao.ConferenceDao;
 import com.conference.dao.RegistrationDao;
 import com.conference.model.Conference;
-import com.conference.model.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +19,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class ConfOverviewController {
-    private User currentUser;
     @FXML
     private TableView<Conference> conferenceList;
     @FXML
@@ -73,12 +70,6 @@ public class ConfOverviewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Admin/ControlPanel/AdministrativeReports.fxml"));
             Parent root = loader.load();
-
-            AdminControlPanelController controller = loader.getController();
-            if (currentUser != null) {
-                controller.setUser(currentUser);
-            }
-
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Admin Control Panel");
@@ -115,9 +106,5 @@ public class ConfOverviewController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    public void setUser(User user) {
-        currentUser = user;
     }
 }

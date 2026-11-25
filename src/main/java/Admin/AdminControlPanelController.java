@@ -1,6 +1,5 @@
 package Admin;
 
-import com.conference.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,15 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class AdminControlPanelController {
-    @FXML
-    private Label name;
-
     @FXML
     private void openCreate(ActionEvent event){
         openScreen(event, "/fxml/Admin/ControlPanel/createConference.fxml", "Create Conference");
@@ -55,9 +50,5 @@ public class AdminControlPanelController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    public void setUser(User user) {
-        name.setText("Name: " + user.getFullName());
     }
 }
