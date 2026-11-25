@@ -265,4 +265,30 @@ public class RegistrationDao {
                     "Failed to decrease waitlist positions", e);
         }
     }
+    public static List<Registration> findRegisteredParticipants(int conferenceId) {
+        List<Registration> list = new ArrayList<>();
+        String sql = "SELECT * FROM registrations r join conferences c ON r.conference_id = c.conference_id WHERE c.conference_id = ?";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, conferenceId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    RegistrationStatus statusValue = RegistrationStatus.valueOf(rs.getString("status").toUpperCase());
+                    list.add(new Registration(
+                            rs.getInt("registration_id"),
+                            rs.getInt("userId"),
+                            rs.getInt("conferenceId"),
+                            statusValue,
+                            rs.getInt("waitlistPosition"),
+                            rs.getString("registrationDate")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not find registered users for conference: " + conferenceId, e);
+            throw new DataAccessException("Failed to find registered Participants", e);
+        }
+        return list;
+    }
 }
