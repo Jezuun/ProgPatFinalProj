@@ -72,9 +72,9 @@ public class ConfOverviewController {
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Admin Control Panel");
+            stage.setTitle("Admin Reports");
         } catch (IOException e) {
-            showMessage(Alert.AlertType.ERROR, "Error", "Could not return to the Admin Control Panel");
+            showMessage(Alert.AlertType.ERROR, "Error", "Could not return to the Admin Reports");
         }
     }
 

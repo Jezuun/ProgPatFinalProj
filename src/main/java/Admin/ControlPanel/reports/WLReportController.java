@@ -3,8 +3,11 @@ package Admin.ControlPanel.reports;
 import Participant.DashboardController;
 import com.conference.dao.ConferenceDao;
 import com.conference.dao.RegistrationDao;
+import com.conference.dao.UserDao;
 import com.conference.model.Conference;
 import com.conference.model.Registration;
+import com.conference.model.RegistrationStatus;
+import com.conference.model.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,7 +37,8 @@ public class WLReportController {
     @FXML
     private ToggleButton lang;
 
-    private final ObservableList<Conference> list = FXCollections.observableArrayList();
+    private final ObservableList<Conference> confList = FXCollections.observableArrayList();
+    private final ObservableList<Registration> registList = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -42,24 +46,20 @@ public class WLReportController {
     }
 
     private void loadConferenceList() {
-        list.clear();
+        confList.clear();
         List<Conference> conferences = ConferenceDao.getConferenceNames();
-        list.addAll(conferences);
+        confList.addAll(conferences);
         conferenceName.setCellValueFactory(
                 cell -> new SimpleStringProperty(cell.getValue().getTitle())
         );
 
-        conferenceList.setItems(list);
-    }
-
-    private void loadWLParticipants() {
-
+        conferenceList.setItems(confList);
     }
 
     @FXML
     private void goBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Admin/reports/AdminReportsController.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Admin/ControlPanel/AdministrativeReports.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -71,11 +71,20 @@ public class WLReportController {
 
     @FXML
     public void view() {
+        registList.clear();
         Conference selected = conferenceList.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showMessage(Alert.AlertType.WARNING, "No Selection", "Please select a conference first");
             return;
         }
+        List<Registration> registrations = RegistrationDao.findRegisteredParticipants(selected.getConferenceId());
+        for(Registration r : registrations) {
+            if(r.getStatus() == RegistrationStatus.WAITLISTED)
+                registList.add(r);
+            }
+        position.setCellValueFactory(cell -> new SimpleStringProperty(String.valueOf(cell.getValue().getWaitlistPosition())));
+        participants.setCellValueFactory(cell -> new SimpleStringProperty((UserDao.findById(cell.getValue().getUserId())).getFullName()));
+        participantsList.setItems(registList);
     }
 
     @FXML

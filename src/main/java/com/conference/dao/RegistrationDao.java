@@ -267,7 +267,7 @@ public class RegistrationDao {
     }
     public static List<Registration> findRegisteredParticipants(int conferenceId) {
         List<Registration> list = new ArrayList<>();
-        String sql = "SELECT * FROM registrations r join conferences c ON r.conference_id = c.conference_id WHERE c.conference_id = ?";
+        String sql = "SELECT * FROM registrations r JOIN conferences c ON r.conference_id = c.conference_id WHERE c.conference_id = ?";
 
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -277,11 +277,11 @@ public class RegistrationDao {
                     RegistrationStatus statusValue = RegistrationStatus.valueOf(rs.getString("status").toUpperCase());
                     list.add(new Registration(
                             rs.getInt("registration_id"),
-                            rs.getInt("userId"),
-                            rs.getInt("conferenceId"),
+                            rs.getInt("user_id"),
+                            rs.getInt("conference_id"),
                             statusValue,
-                            rs.getInt("waitlistPosition"),
-                            rs.getString("registrationDate")
+                            rs.getInt("waitlist_position"),
+                            rs.getString("registration_date")
                     ));
                 }
             }

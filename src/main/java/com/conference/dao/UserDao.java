@@ -71,7 +71,7 @@ public class UserDao {
         }
     }
 
-    public User findById(int userId) {
+    public static User findById(int userId) {
         String sql = "SELECT * FROM users WHERE user_id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

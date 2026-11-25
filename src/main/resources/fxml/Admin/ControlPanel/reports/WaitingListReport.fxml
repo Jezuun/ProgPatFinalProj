@@ -20,10 +20,10 @@
       <Label layoutX="489.0" layoutY="14.0" text="Admin" />
       <ToggleButton fx:id="lang" layoutX="535.0" layoutY="10.0" mnemonicParsing="false" onAction="#toggleLang" styleClass="language" text="Language" />
       <Label alignment="CENTER" layoutX="116.0" layoutY="125.0" prefHeight="17.0" prefWidth="487.0" text="Participants in the waiting-list" />
-      <TableView layoutX="193.0" layoutY="152.0" prefHeight="200.0" prefWidth="357.0">
+      <TableView fx:id="participantsList" layoutX="193.0" layoutY="152.0" prefHeight="200.0" prefWidth="357.0">
         <columns>
-          <TableColumn prefWidth="83.99998474121094" text="Position" />
-          <TableColumn minWidth="0.0" prefWidth="273.3333435058594" text="Participants" />
+          <TableColumn fx:id="position" prefWidth="83.99998474121094" text="Position" />
+          <TableColumn fx:id="participants" minWidth="0.0" prefWidth="273.3333435058594" text="Participants" />
         </columns>
       </TableView>
       <Button layoutX="322.0" layoutY="379.0" mnemonicParsing="false" onAction="#view" styleClass="view" text="View" />
