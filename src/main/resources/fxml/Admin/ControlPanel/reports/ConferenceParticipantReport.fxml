@@ -6,12 +6,12 @@
 
 <AnchorPane prefHeight="451.0" prefWidth="617.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Admin.ControlPanel.reports.ConfPartReportController">
     <children>
-        <TableView prefHeight="451.0" prefWidth="123.0">
+        <TableView fx:id="conferenceList" prefHeight="451.0" prefWidth="123.0">
             <columns>
-                <TableColumn prefWidth="121.33331298828125" text="Conference List" />
+                <TableColumn fx:id="conferenceName" prefWidth="121.33331298828125" text="Conference List" />
             </columns>
         </TableView>
-        <Label alignment="CENTER" layoutX="123.0" layoutY="52.0" prefHeight="17.0" prefWidth="477.0" text="Conference Particicpant Report">
+        <Label alignment="CENTER" layoutX="123.0" layoutY="52.0" prefHeight="17.0" prefWidth="477.0" text="Conference Participant Report">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -19,12 +19,12 @@
         <Label alignment="CENTER" layoutX="123.0" layoutY="79.0" prefHeight="17.0" prefWidth="477.0" text="Select a conference to view" />
         <Label layoutX="489.0" layoutY="14.0" text="Admin" />
         <ToggleButton layoutX="535.0" layoutY="10.0" mnemonicParsing="false" styleClass="language" stylesheets="@../../../../buttons.css" text="Language" />
-        <TableView layoutX="193.0" layoutY="152.0" prefHeight="200.0" prefWidth="357.0">
+        <TableView fx:id="userList" layoutX="193.0" layoutY="152.0" prefHeight="200.0" prefWidth="357.0">
             <columns>
-                <TableColumn prefWidth="356.0" text="Confirmed Participants" />
+                <TableColumn fx:id="userName" prefWidth="356.0" text="Confirmed Participants" />
             </columns>
         </TableView>
-        <Button layoutX="308.0" layoutY="378.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="107.0" styleClass="view" stylesheets="@../../../../buttons.css" text="View" />
-        <Button layoutX="551.0" layoutY="404.0" mnemonicParsing="false" styleClass="logout" stylesheets="@../../../../buttons.css" text="Return" />
+        <Button layoutX="308.0" layoutY="378.0" mnemonicParsing="false" onAction="#view" prefHeight="25.0" prefWidth="107.0" styleClass="view" stylesheets="@../../../../buttons.css" text="View" />
+        <Button layoutX="551.0" layoutY="404.0" mnemonicParsing="false" onAction="#goBack" styleClass="logout" stylesheets="@../../../../buttons.css" text="Return" />
     </children>
 </AnchorPane>

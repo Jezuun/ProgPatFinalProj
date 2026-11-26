@@ -37,7 +37,7 @@ public class RegistrationDao {
         return null;
     }
 
-    public List<Registration> findAll() {
+    public static List<Registration> findAll() {
         List<Registration> list = new ArrayList<>();
         String sql = "SELECT * FROM registrations";
         try (Connection conn = Database.getConnection();
@@ -106,7 +106,7 @@ public class RegistrationDao {
         }
     }
 
-    private Registration mapRegistration(ResultSet rs) throws SQLException {
+    private static Registration mapRegistration(ResultSet rs) throws SQLException {
         Integer waitlistPos = rs.getObject("waitlist_position") != null ? rs.getInt("waitlist_position") : null;
         return new Registration(
             rs.getInt("registration_id"),
