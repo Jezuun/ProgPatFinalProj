@@ -26,9 +26,6 @@ import java.util.List;
 
 public class ConfPartReportController {
 
-    private final UserDao userDao = new UserDao();
-    private final RegistrationDao registrationDao = new RegistrationDao();
-
     @FXML
     private TableView<Conference> conferenceList;
     @FXML
@@ -69,10 +66,10 @@ public class ConfPartReportController {
     private void loadParticipants(Conference conference) {
         participantList.clear();
         try {
-            List<String> names = registrationDao.findAll().stream()
+            List<String> names = RegistrationDao.findAll().stream()
                     .filter(r -> r.getConferenceId() == conference.getConferenceId())
                     .filter(r -> r.getStatus() == RegistrationStatus.CONFIRMED)
-                    .map(r -> userDao.findById(r.getUserId()))
+                    .map(r -> UserDao.findById(r.getUserId()))
                     .filter(u -> u != null)
                     .map(User::getFullName)
                     .sorted()
