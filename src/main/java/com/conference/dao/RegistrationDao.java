@@ -250,9 +250,9 @@ public class RegistrationDao {
         return list;
     }
 
-    public static Queue<Registration> getWaitlistQueue(int conferenceId) {
+    public static Queue<Registration> getWLQueue(int conferenceId) {
         Queue<Registration> waitlist = new ArrayDeque<>();
-        String sql = "SELECT * FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED' ORDER BY registration_date ASC, registration_id ASC";
+        String sql = "SELECT * FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED' ORDER BY waitlist_position ASC, registration_id ASC";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, conferenceId);
@@ -269,11 +269,30 @@ public class RegistrationDao {
     }
 
     public static void promoteNext(int conferenceId) {
-        Queue<Registration> waitlist = getWaitlistQueue(conferenceId);
+        Queue<Registration> waitlist = getWLQueue(conferenceId);
         Registration next = waitlist.poll();
 
         if (next != null) {
             updateStatus(next.getUserId(), conferenceId, RegistrationStatus.CONFIRMED, null);
+        }
+
+        int pos = 1;
+
+        while(!waitlist.isEmpty()) {
+            Registration current = waitlist.poll();
+            updateStatus(current.getUserId(), conferenceId, RegistrationStatus.WAITLISTED, pos);
+            pos++;
+        }
+    }
+
+    public static void updateWLPos(int conferenceId) {
+        Queue<Registration> waitlist =  getWLQueue(conferenceId);
+
+        int pos = 1;
+        while(!waitlist.isEmpty()) {
+            Registration current = waitlist.poll();
+            updateStatus(current.getUserId(), conferenceId, RegistrationStatus.WAITLISTED, pos);
+            pos++;
         }
     }
 }

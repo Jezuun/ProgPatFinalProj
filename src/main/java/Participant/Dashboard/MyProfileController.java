@@ -55,7 +55,9 @@ public class MyProfileController {
             User updatedProfile = new User(currentUser.getUserId(), updateFullName(), updateEmail(), updateAge(), currentUser.getRole());
             UserDao.update(updatedProfile);
 
-            if(newPassword != null) {
+            if(newPassword != null && newPassword.length() < 6)
+                showMessage(Alert.AlertType.WARNING, "Invalid Password", "Password must be at least 6 character long");
+            else if(newPassword != null) {
                 UserDao userDao = new UserDao();
                 userDao.updatePassword(currentUser.getUserId(), com.conference.validation.Validate.hash(newPassword));
             }
@@ -142,6 +144,10 @@ public class MyProfileController {
 
     public String updateEmail() {
         String email = emailTF.getText();
+        if(!email.trim().isBlank() && !email.matches("^[A-Za-z0-9._]+@[A-Za-z0-9.]+\\.[A-Za-z]{2,}$")) {
+            showMessage(Alert.AlertType.WARNING, "Invalid Email", "Email is invalid. Please try again");
+            return currentUser.getEmail();
+        }
         if(email.trim().isBlank()) {
             return currentUser.getEmail();
         }

@@ -134,6 +134,7 @@ public class ConfListController {
             RegistrationStatus newStatus;
 
             if (confirmedParticipants >= selected.getCapacity()) {
+                RegistrationDao.updateWLPos(conferenceId);
                 waitingListPos = RegistrationDao.findHighestWLPos(conferenceId) + 1;
                 newStatus = RegistrationStatus.WAITLISTED;
             } else {

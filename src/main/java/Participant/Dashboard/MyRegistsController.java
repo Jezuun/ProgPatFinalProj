@@ -101,9 +101,7 @@ public class MyRegistsController {
             if (status.equalsIgnoreCase("CONFIRMED")) {
                 RegistrationDao.updateStatus(userId, conferenceId, RegistrationStatus.CANCELLED, null);
                 RegistrationDao.promoteNext(conferenceId);
-            }
-            else if (status.equalsIgnoreCase("WAITLISTED")) {
-                RegistrationDao.updateStatus(userId, conferenceId, RegistrationStatus.CANCELLED, null);
+                showMessage(Alert.AlertType.INFORMATION, "Cancelled", "Your registration has been cancelled");
             }
             loadConferenceList();
         }

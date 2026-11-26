@@ -91,11 +91,11 @@ public class MyWLController {
             String status = RegistrationDao.findStatus(conferenceId, userId);
             if (status != null && status.equalsIgnoreCase("WAITLISTED")) {
                 RegistrationDao.updateStatus(userId, conferenceId, RegistrationStatus.CANCELLED, null);
+                RegistrationDao.updateWLPos(conferenceId);
                 showMessage(Alert.AlertType.INFORMATION, "Cancelled", "Your registration has been cancelled");
             }
             else
                 showMessage(Alert.AlertType.WARNING, "Cannot Cancel", "You do not have an active registration");
-
             loadConferenceList();
         }
         catch (RuntimeException e) {

@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 public class WLReportController {
@@ -82,6 +83,7 @@ public class WLReportController {
             if(r.getStatus() == RegistrationStatus.WAITLISTED)
                 registList.add(r);
         }
+        registList.sort(Comparator.comparingInt(Registration::getWaitlistPosition));
         position.setCellValueFactory(cell -> new SimpleStringProperty(String.valueOf(cell.getValue().getWaitlistPosition())));
         participants.setCellValueFactory(cell -> new SimpleStringProperty((UserDao.findById(cell.getValue().getUserId())).getFullName()));
         participantsList.setItems(registList);
