@@ -10,8 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -162,34 +164,6 @@ public class RegistrationDao {
         return list;
     }
 
-    public static List<Conference> findWaitListConferences(int userId) {
-        List<Conference> list = new ArrayList<>();
-        String sql = "SELECT c.* FROM conferences c INNER JOIN registrations r ON c.conference_id = r.conference_id WHERE r.user_id = ? AND r.status = 'WAITLISTED'";
-
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    list.add(new Conference(
-                            rs.getInt("conference_id"),
-                            rs.getString("title"),
-                            rs.getInt("capacity"),
-                            rs.getString("start_date_time"),
-                            rs.getString("end_date_time"),
-                            rs.getString("location")
-                    ));
-                }
-            }
-
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Could not find registered conferences for user: " + userId, e);
-            throw new DataAccessException("Failed to find registered conferences", e);
-        }
-
-        return list;
-    }
-
     public static int findWLPos(int conferenceId, int userId) {
         String sql = "SELECT waitlist_position FROM registrations WHERE conference_id = ? AND user_id = ? AND status = 'WAITLISTED'";
 
@@ -249,22 +223,6 @@ public class RegistrationDao {
         return null;
     }
 
-    public static void decrementWLPos(int conferenceId, int newPosition) {
-        String sql = "UPDATE registrations SET waitlist_position = waitlist_position - 1 WHERE conference_id = ? AND status = 'WAITLISTED' AND waitlist_position > ?";
-
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, conferenceId);
-            stmt.setInt(2, newPosition);
-            stmt.executeUpdate();
-        }
-        catch (SQLException e) {
-            LOGGER.log(Level.SEVERE,
-                    "Could not update waitlist positions", e);
-            throw new DataAccessException(
-                    "Failed to decrease waitlist positions", e);
-        }
-    }
     public static List<Registration> findRegisteredParticipants(int conferenceId) {
         List<Registration> list = new ArrayList<>();
         String sql = "SELECT * FROM registrations r JOIN conferences c ON r.conference_id = c.conference_id WHERE c.conference_id = ?";
@@ -290,5 +248,32 @@ public class RegistrationDao {
             throw new DataAccessException("Failed to find registered Participants", e);
         }
         return list;
+    }
+
+    public static Queue<Registration> getWaitlistQueue(int conferenceId) {
+        Queue<Registration> waitlist = new ArrayDeque<>();
+        String sql = "SELECT * FROM registrations WHERE conference_id = ? AND status = 'WAITLISTED' ORDER BY registration_date ASC, registration_id ASC";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, conferenceId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                RegistrationDao dao = new RegistrationDao();
+                while (rs.next())
+                    waitlist.offer(dao.mapRegistration(rs));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not load waitlist queue", e);
+            throw new DataAccessException("Failed to load waitlist queue", e);
+        }
+        return waitlist;
+    }
+
+    public static void promoteNext(int conferenceId) {
+        Queue<Registration> waitlist = getWaitlistQueue(conferenceId);
+        Registration next = waitlist.poll();
+
+        if (next != null) {
+            updateStatus(next.getUserId(), conferenceId, RegistrationStatus.CONFIRMED, null);
+        }
     }
 }

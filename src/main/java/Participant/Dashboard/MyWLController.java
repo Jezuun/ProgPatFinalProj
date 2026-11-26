@@ -51,19 +51,11 @@ public class MyWLController {
 
     public void loadConferenceList() {
         list.clear();
-        List<Conference> conferences = RegistrationDao.findWaitListConferences(currentUser.getUserId());
+        List<Conference> conferences = RegistrationDao.findRegisteredConferences(currentUser.getUserId());
         for(Conference c : conferences) {
-            int confirmedParticipants = RegistrationDao.findRegistCountById(c.getConferenceId());
-            if ((c.getCapacity() - confirmedParticipants > 0) &&
-                    RegistrationDao.findStatus(c.getConferenceId(), currentUser.getUserId()).equalsIgnoreCase("WAITLISTED") &&
-                    RegistrationDao.findWLPos(c.getConferenceId(), currentUser.getUserId()) == 1) {
-                int promotedPosition = RegistrationDao.findWLPos(c.getConferenceId(), currentUser.getUserId());
-                RegistrationDao.updateStatus(currentUser.getUserId(), c.getConferenceId(), RegistrationStatus.CONFIRMED, null);
-                RegistrationDao.decrementWLPos(c.getConferenceId(), promotedPosition);
-            }
+            if(RegistrationDao.findStatus(c.getConferenceId(), currentUser.getUserId()).equalsIgnoreCase("WAITLISTED"))
+                list.add(c);
         }
-        list.addAll(conferences);
-
         conferenceList.setItems(list);
     }
 
@@ -84,7 +76,6 @@ public class MyWLController {
             pos.setText("Position: " + RegistrationDao.findWLPos(selected.getConferenceId(), currentUser.getUserId()));
         else
             pos.setText("Position: Unknown");
-        loadConferenceList();
     }
 
     @FXML

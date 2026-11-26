@@ -81,7 +81,7 @@ public class WLReportController {
         for(Registration r : registrations) {
             if(r.getStatus() == RegistrationStatus.WAITLISTED)
                 registList.add(r);
-            }
+        }
         position.setCellValueFactory(cell -> new SimpleStringProperty(String.valueOf(cell.getValue().getWaitlistPosition())));
         participants.setCellValueFactory(cell -> new SimpleStringProperty((UserDao.findById(cell.getValue().getUserId())).getFullName()));
         participantsList.setItems(registList);

@@ -3,6 +3,7 @@ package Participant.Dashboard;
 import Participant.DashboardController;
 import com.conference.dao.RegistrationDao;
 import com.conference.model.Conference;
+import com.conference.model.Registration;
 import com.conference.model.RegistrationStatus;
 import com.conference.model.User;
 import javafx.beans.property.SimpleStringProperty;
@@ -52,14 +53,9 @@ public class MyRegistsController {
         list.clear();
         List<Conference> conferences = RegistrationDao.findRegisteredConferences(currentUser.getUserId());
         for(Conference c : conferences) {
-            int confirmedParticipants = RegistrationDao.findRegistCountById(c.getConferenceId());
-            if ((c.getCapacity() - confirmedParticipants > 0) &&
-                    RegistrationDao.findStatus(c.getConferenceId(), currentUser.getUserId()).equalsIgnoreCase("WAITLISTED") &&
-                    RegistrationDao.findWLPos(c.getConferenceId(), currentUser.getUserId()) == 1) {
-                RegistrationDao.updateStatus(currentUser.getUserId(), c.getConferenceId(), RegistrationStatus.CONFIRMED, null);
-            }
+            if(RegistrationDao.findStatus(c.getConferenceId(), currentUser.getUserId()).equalsIgnoreCase("CONFIRMED"))
+                list.add(c);
         }
-        list.addAll(conferences);
         conferenceList.setItems(list);
     }
 
@@ -102,13 +98,13 @@ public class MyRegistsController {
             int userId = currentUser.getUserId();
             int conferenceId = selected.getConferenceId();
             String status = RegistrationDao.findStatus(conferenceId, userId);
-            if (status != null &&(status.equalsIgnoreCase("CONFIRMED") || status.equalsIgnoreCase("WAITLISTED"))) {
+            if (status.equalsIgnoreCase("CONFIRMED")) {
                 RegistrationDao.updateStatus(userId, conferenceId, RegistrationStatus.CANCELLED, null);
-                showMessage(Alert.AlertType.INFORMATION, "Cancelled", "Your registration has been cancelled");
+                RegistrationDao.promoteNext(conferenceId);
             }
-            else
-                showMessage(Alert.AlertType.WARNING, "Cannot Cancel", "You do not have an active registration");
-
+            else if (status.equalsIgnoreCase("WAITLISTED")) {
+                RegistrationDao.updateStatus(userId, conferenceId, RegistrationStatus.CANCELLED, null);
+            }
             loadConferenceList();
         }
         catch (RuntimeException e) {
