@@ -1,9 +1,9 @@
 
-import Admin.AdminControlPanelController;
 import Participant.DashboardController;
 import com.conference.model.Role;
 import com.conference.model.User;
 import com.conference.validation.Validate;
+import com.DesignPatterns.DashboardFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,11 +49,10 @@ public class LogInController {
             showMessage(Alert.AlertType.ERROR, "Login Failed", "Invalid email or password.");
             return;
         }
+        String path = DashboardFactory.getPath(user.getRole());
+        String title = DashboardFactory.getDashboardTitle(user.getRole());
 
-        if (user.getRole() == Role.ADMINISTRATOR)
-            openScreen(event, "/fxml/Admin/adminControlPanel.fxml", "Admin Control Panel", null);
-        else
-            openScreen(event, "/fxml/Participant/UserDashboard.fxml", "Dashboard", user);
+        openScreen(event, path, title, user);
     }
 
     @FXML
